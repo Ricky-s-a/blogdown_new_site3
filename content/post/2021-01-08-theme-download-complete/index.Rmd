@@ -1,0 +1,36 @@
+---
+title: themeダウンロード完了
+author: Rikiya Honda
+date: '2021-01-08'
+slug: theme-download-complete
+categories:
+  - note
+tags: []
+description: ''
+thumbnail: ''
+---
+
+
+themeのダウンロード完了しました！
+`R/blogdown_new_site/themes`の中を自分好みのテンプレートに変える必要があったんですね。。。
+
+ちなみに、テンプレートのダウンロードは、以下のコードをコマンドプロンプトにぶち込むことで出来ます。  
+`git clone https://github.com/vimux/mainroad`
+
+上記のコードは、自分がダウンロードしたかったテンプレートなので、一般化すると以下のようになります。  
+`git clone https://github.com/user/themes`
+
+そして、自分が変えたい/themesのファイルの中にダウンロードしたファイルを置き換えると、自分好みのテンプレートを使えるようになります。
+
+
+大変でしたね！
+ついでに、ツイッターのポストの表示のさせ方も載せておきますね！！
+
+
+```{r echo=FALSE}
+blogdown::shortcode('tweet', '852205086956818432')
+```
+
+
+あと、[google analytics](https://analytics.google.com/analytics/web/provision/#/provision)使ってみたいですね。
+訪問者をトラッキングできるらしいです。

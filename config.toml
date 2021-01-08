@@ -1,23 +1,29 @@
 baseurl = "/"
+relativeurls = false
 languageCode = "en-us"
-title = "A Hugo website"
+title = "Rikiya's blog"
 theme = "mainroad"
 googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+hasCJKLanguage = true
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
 
 [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+[[menu.main]]
     name = "About"
     url = "/about/"
 [[menu.main]]
     name = "GitHub"
-    url = "https://github.com/rstudio/blogdown"
+    url = "https://github.com/Ricky-s-a"
 [[menu.main]]
     name = "Twitter"
-    url = "https://twitter.com/rstudio"
+    url = "https://twitter.com/P5Umqd"
 
 [params]
     description = "A website built through Hugo and blogdown."
