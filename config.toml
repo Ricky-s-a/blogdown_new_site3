@@ -7,6 +7,13 @@ googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
 hasCJKLanguage = true
+disqusShortname = "" # Enable Disqus comments by entering your Disqus shortname
+paginate = "10"
+
+[Author] # Used in authorbox
+  name = "John Doe"
+  bio = "John Doe's true identity is unknown. Maybe he is a successful blogger or writer. Nobody knows it."
+  avatar = "img/avatar.png"
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
@@ -26,8 +33,25 @@ hasCJKLanguage = true
     url = "https://twitter.com/P5Umqd"
 
 [params]
+    subtitle = "" # Deprecated in favor of .Site.Params.logo.subtitle
     description = "A website built through Hugo and blogdown."
-
+    copyright = "Rikiya Honda" # Footer copyright holder, otherwise will use site title
+    opengraph = true # Enable OpenGraph if true
+    schema = true # Enable Schema
+    twitter_cards = true # Enable Twitter Cards if true
+    readmore = true # Show "Read more" button in list if true
+    authorbox = true # Show authorbox at bottom of pages if true
+    toc = true # Enable Table of Contents
+    pager = true
+    post_meta = ["author", "date", "categories"] # Specify section pages to show on home page and the "Recent articles" widget
+    mainSections = ["post", "blog", "news"]
+    mathjax = true # Enable MathJax
+    mathjaxPath = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js" # Specify MathJax path
+    googleFontsLink = "https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700" # Load Google Fonts
+    highlightColor = "" # Deprecated in favor of .Site.Params.style.vars.highlightColor
+    customCSS = ["css/custom.css"] # Include custom CSS files
+    customJS = ["js/custom.js"] # Include custom JS files
+    
     # options for highlight.js (version, additional languages, and theme)
     highlightjsVersion = "9.12.0"
     highlightjsCDN = "//cdnjs.cloudflare.com/ajax/libs"
@@ -46,3 +70,31 @@ hasCJKLanguage = true
     height = 50
     alt = "Logo"
 
+[Params.style.vars]
+  highlightColor = "#e22d30" # Override highlight color
+  fontFamilyPrimary = "'Open Sans', Helvetica, Arial, sans-serif"
+  fontFamilySecondary = "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+
+[Params.sidebar]
+  home = "right" # Configure layout for home page
+  list = "left"  # Configure layout for list pages
+  single = false # Configure layout for single pages
+  # Enable widgets in given order
+  widgets = ["search", "recent", "categories", "taglist", "social", "languages"]
+  # alternatively "ddg-search" can be used, to search via DuckDuckGo
+ 
+ [Params.widgets]
+  recent_num = 5 # Set the number of articles in the "Recent articles" widget
+  tags_counter = false # Enable counter for each tag in "Tags" widget
+  
+  [Params.widgets.social]
+  # Enable parts of social widget
+  facebook = "username"
+  twitter = "https://twitter.com/P5Umqd"
+  instagram = "username"
+  linkedin = "username"
+  telegram = "username"
+  github = "https://github.com/Ricky-s-a"
+  gitlab = "username"
+  bitbucket = "username"
+  email = "example@example.com"
