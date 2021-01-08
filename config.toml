@@ -5,11 +5,26 @@ paginate = "10" # Number of posts per page
 theme = "mainroad"
 disqusShortname = "" # Enable Disqus comments by entering your Disqus shortname
 googleAnalytics = "" # Enable Google Analytics by entering your tracking id
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+hasCJKLanguage = true
+
 
 [Author] # Used in authorbox
   name = "Rikiay Honda"
   bio = "Rikiya Honda's true identity is friendly, eager to improve, and open to every constructive comments. Maybe he is a successful blogger or writer. Who knows?"
   avatar = ""
+
+[[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+[[menu.main]]
+    name = "Book"
+    url = "/book/"
+
 
 [Params]
   subtitle = "" # Deprecated in favor of .Site.Params.logo.subtitle
