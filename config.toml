@@ -9,7 +9,7 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
 [Author] # Used in authorbox
   name = "Rikiay Honda"
   bio = "Rikiya Honda's true identity is friendly, eager to improve, and open to every constructive comments. Maybe he is a successful blogger or writer. Who knows?"
-  avatar = "img/onigiri2.png"
+  avatar = ""
 
 [Params]
   subtitle = "" # Deprecated in favor of .Site.Params.logo.subtitle
@@ -42,7 +42,7 @@ googleAnalytics = "" # Enable Google Analytics by entering your tracking id
   fontFamilySecondary = "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
 
 [Params.logo]
-  image = "img/bike2.png" # Logo image. Path relative to "static"
+  image = "" # Logo image. Path relative to "static"
   title = "A pice of cake" # Logo title, otherwise will use site title
   subtitle = "But cake is always sweet" # Logo subtitle
 
