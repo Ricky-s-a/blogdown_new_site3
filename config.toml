@@ -21,9 +21,7 @@ hasCJKLanguage = true
 [[menu.main]]
     name = "About"
     url = "/about/"
-[[menu.main]]
-    name = "Book"
-    url = "/book/"
+
 
 
 [Params]
