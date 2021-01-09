@@ -20,6 +20,7 @@ tweets <- search_tweets("鬼滅",
                         )
 
 
+
 # tidy data  --------------------------------------------------------------
 
 tweets_text <- tweets$text
