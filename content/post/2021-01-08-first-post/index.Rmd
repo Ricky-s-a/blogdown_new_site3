@@ -60,3 +60,4 @@ slug: first-post
 [今さら聞けない！ターミナルの使い方【初心者向け】](https://techacademy.jp/magazine/5155)
 
 [Mainroad](https://github.com/Vimux/mainroad)
+
