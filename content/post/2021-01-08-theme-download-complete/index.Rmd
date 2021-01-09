@@ -1,15 +1,15 @@
 ---
-title: themeダウンロード完了
+title: themeダウンロード完了！！
 author: Rikiya Honda
 date: '2021-01-08'
 slug: theme-download-complete
 categories:
+  - blog
   - note
 tags: []
 description: ''
 thumbnail: ''
 ---
-
 
 themeのダウンロード完了しました！
 `R/blogdown_new_site/themes`の中を自分好みのテンプレートに変える必要があったんですね。。。
