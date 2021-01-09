@@ -30,6 +30,9 @@ draft: true
 ##　全行程の概要
 
 今回は、ツイッターから文字データを取得して、日本語のワードクラウドを作ります。
+まだTwitterのAPIが取得できていないので、Twitterからテキストデータを取得する方法は、別の機会にまとめたいと思います！
+
+
 大まかに全部で4つの工程があります。
 
 
@@ -66,14 +69,15 @@ lapply(Packages, library, character.only = TRUE)
 
 ### 1. ツイッターから文字データを取得する。
 今回は、** 鬼滅 **という言葉と含む、日本語の6~9日間の間のツイートを1000個手に入れるというコードを書きました。
-```{r}
+
+
 tweets <- search_tweets("鬼滅", 
                         n = 1000, 
                         type = "recent", # "popular is insufficient in number of tweets. 
                         include_rts = FALSE,
                         lang = "jap"
                         )
-```
+
 
 ### 2. 分析しやすいよう、データを整える。
 これで、テキストデータが手に入りました。

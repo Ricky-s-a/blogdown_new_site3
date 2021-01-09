@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>blog on Rikiya&#39;s blog</title>
+    <link>/categories/blog/</link>
+    <description>Recent content in blog on Rikiya&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 08 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>themeダウンロード完了！！</title>
+      <link>/post/theme-download-complete/</link>
+      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/theme-download-complete/</guid>
+      <description>themeのダウンロード完了しました！ R/blogdown_new_site/themesの中を自分好みのテンプレートに変える必要があったん</description>
+    </item>
+    
+    <item>
+      <title>やっとウェブサイト作れた</title>
+      <link>/post/first-post/</link>
+      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/first-post/</guid>
+      <description>おはようございます！ 今日は、Creating Websites with R Markdownの３章まで読んで、ウェブサイトを他人からアクセスできる形にしたいと思ってま</description>
+    </item>
+    
+  </channel>
+</rss>
