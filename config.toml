@@ -31,7 +31,7 @@ hasCJKLanguage = true
 [Params]
   subtitle = "" # Deprecated in favor of .Site.Params.logo.subtitle
   description = "Rikiya Honda's Personal blog about everything" # Site description. Used in meta description
-  copyright = "Rikiay Honda" # Footer copyright holder, otherwise will use site title
+  copyright = "Rikiya Honda" # Footer copyright holder, otherwise will use site title
   opengraph = true # Enable OpenGraph if true
   schema = true # Enable Schema
   twitter_cards = true # Enable Twitter Cards if true
@@ -60,7 +60,7 @@ hasCJKLanguage = true
 
 [Params.logo]
   image = "" # Logo image. Path relative to "static"
-  title = "A pice of cake" # Logo title, otherwise will use site title
+  title = "A piece of cake" # Logo title, otherwise will use site title
   subtitle = "But cake is always sweet" # Logo subtitle
 
 [Params.sidebar]

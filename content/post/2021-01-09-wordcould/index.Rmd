@@ -1,0 +1,267 @@
+---
+title: ワードクラウドを作ってみた。
+author: Rikiya Honda
+date: '2021-01-09'
+slug: wordcould
+categories:
+  - note
+tags:
+  - wordcloud
+  - RMeCab
+description: ''
+thumbnail: ''
+# html_document:
+#   toc: true
+#   toc_depth: 3
+#   toc_float: true
+draft: true
+---
+
+こんにちは！ノート系？学習のまとめ系は、今回が初の投稿になります！
+よろしくお願いいたします！！
+
+さて、今回の題名ですが、R言語でワードクラウドなるものを作ってみました。
+ワードクラウドというのは、[こんな](https://theappassembly.com/wp-content/uploads/2016/11/BigDataWordMap-1264x736.jpg)のや[こんな](https://moodle.org/pluginfile.php/154/mod_forum/attachment/1516593/success-word-cloud.jpg?forcedownload=1)ので、とにかくかっこよさげな図って感じです(←テキトー）
+
+まぁ、百聞は一見に如かずなので、とりあえず見ていきましょう！！
+とにかくコードが見たいんじゃ！！って方は、このページの一番下を参照してください。
+
+
+##　全行程の概要
+
+今回は、ツイッターから文字データを取得して、日本語のワードクラウドを作ります。
+大まかに全部で4つの工程があります。
+
+
+
+1. ツイッターから文字データを取得する。
+2. 分析しやすいよう、データを整える。
++ 日本語のみを抽出する。
++ Windowsで扱えるよう、文字コードをShftJisに変更する。
++ 全ての文字をひとつのテキストとしてまとめる。
++ 整ったデータをいったん保存する。
+3. 形態素解析を実行する。
++ 名詞、動詞など残す部分を決める。
++ 列名の変更
+4. word cloudを作る。
+
+
+では、それぞれ見ていきましょう！
+今回の分析では、最近鬼滅が流行っているのもあり、** 鬼滅  **という言葉とともにツイートされている内容は何なのか、という質問を仮想でセットアップして分析していこうと思います！！
+
+## コード
+
+### 実行環境
+
+```{r}
+version
+```
+
+### パッケージを用意する。
+
+```{r}
+Packages <- c("tidyverse", "rtweet", "stringr","RMeCab", "wordcloud", "wordcloud2")
+lapply(Packages, library, character.only = TRUE)
+```
+
+### 1. ツイッターから文字データを取得する。
+今回は、** 鬼滅 **という言葉と含む、日本語の6~9日間の間のツイートを1000個手に入れるというコードを書きました。
+```{r}
+tweets <- search_tweets("鬼滅", 
+                        n = 1000, 
+                        type = "recent", # "popular is insufficient in number of tweets. 
+                        include_rts = FALSE,
+                        lang = "jap"
+                        )
+```
+
+### 2. 分析しやすいよう、データを整える。
+これで、テキストデータが手に入りました。
+```{r}
+tweets_text <- tweets$text
+```
+
+
+#### 2.1. 日本語のみを抽出する
+```{r}
+tweets_text_onlyJa <- str_replace_all(tweets_text, "\\p{ASCII}", "")
+```
+
+
+#### 2.2. Windowsで扱えるよう、文字コードをShftJisに変更する。
+shiftJintというのは、Windowsで読み込める文字コードの種類だそうです。
+詳しくは、[Wikipedia](https://ja.wikipedia.org/wiki/Shift_JIS)かなにか他のサイトを参照してください。検索すれば、いくらでも出てきます。
+```{r}
+tweets_text_onlyJa_shiftJis = tweets_text_onlyJa %>% iconv(from = "UTF-8", to = "CP932") %>% na.omit()
+```
+
+
+#### 2.3. 全ての文字をひとつのテキストとしてまとめる。
+```{r}
+tweets_text_all = ""
+for (i in 1:length((tweets_text_onlyJa_shiftJis))) {
+  tweets_text_all = paste(tweets_text_all, tweets_text_onlyJa_shiftJis[i], sep = "")
+}
+```
+
+#### 2.4. 整ったデータをいったん保存する。
+```{r}
+write.table(tweets_text_all, "tweets_text_all.txt")
+```
+
+### 3. 形態素解析を実行する。
+ここからは、`RMeCab`での作業になります。
+今回は、** 鬼滅 **に対する印象を調べたかった為、形容詞と名詞を抽出しました。
+サ変接続は、動詞として扱うため除き、非自立の形容詞は、品詞として状態をよくあらわさない為、除いています。
+```{r}
+docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
+  select(everything(), 
+         word = TERM,　# 列名の変更
+         freq = starts_with("tweets")) # 列名の変更
+
+docDF_text2 = docDF_text %>% 
+  filter(!POS2 %in% c("非自立", "サ変接続")) 
+```
+
+
+### 4. word cloudを作る。
+まずは、パッケージ`wordcloud`を使ってグラフを作ります。
+```{r}
+wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf, 
+          scale = c(3.5, 0.25), # c(size, width)
+          ordered.colors = FALSE,
+          random.order = FALSE, random.color = FALSE, rot.per = 3.5, 
+          colors = brewer.pal(10, "Set3")) #brewer.pal(8, "Dark2")) 
+```
+
+さすがにしょぼすぎるので、パッケージ`Wordcloud2`を使ってワードクラウドを作りましょう。
+```{r}
+df <- docDF_text2 %>% 
+  arrange(desc(freq)) %>% 
+  filter(freq < 1000) %>% 
+  select(word, freq)
+
+
+wordcloud2(data = df, size = 1, color = "random-light")
+
+```
+
+もう一つ。
+```{r}
+wordcloud2(data = df, size = 1, color = "random-dark", 
+           shuffle = FALSE, shape = 'circle') 
+
+```
+
+さらにもう一つ。
+```{r}
+wordcloud2(data = df, size = 1, 
+           minRotation = -pi/6, maxRotation = -pi/6,
+           color = ifelse(df[,2] > 100, "red", "skyblue"),
+           shuffle = FALSE, shape = 'pentagon') 
+```
+
+## 結論
+鬼滅商品の売れ行きがえぐいORツイッターにて鬼滅商戦が発生している模様。　
+
+##  最後に、、、
+いかがだったでしょうか？
+今度は、ネットワーク図に関しての情報を共有したいと思います！
+
+あと、書いてて思ったのが、なぜ形容詞と名詞にしたのか、理解が欠けていますね、、、
+
+それらも含めて、引き続きテキストマイニングの勉強をしていきたいと思います！
+
+最後まで見ていただいてありがとうございました！
+
+adios！
+
+## 全コード
+
+```{r}
+
+# set up library 
+
+Packages <- c("tidyverse", "rtweet", "stringr","RMeCab", "wordcloud", "wordcloud2")
+lapply(Packages, library, character.only = TRUE)
+
+# import data from twitter
+tweets <- search_tweets("鬼滅", 
+                        n = 1000, 
+                        type = "recent", # "popular is insufficient in number of tweets. 
+                        include_rts = FALSE,
+                        )
+
+
+# tidy data 
+
+tweets_text <- tweets$text
+tweets_text_onlyJa <- str_replace_all(tweets_text, "\\p{ASCII}", "")
+tweets_text_onlyJa_shiftJis = tweets_text_onlyJa %>% iconv(from = "UTF-8", to = "CP932") %>% na.omit()
+
+
+tweets_text_all = ""
+for (i in 1:length((tweets_text_onlyJa_shiftJis))) {
+  tweets_text_all = paste(tweets_text_all, tweets_text_onlyJa_shiftJis[i], sep = "")
+}
+
+write.table(tweets_text_all, "tweets_text_all.txt")
+
+
+
+# RMeCab ------------------------------------------------------------------
+
+
+docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
+  select(everything(), 
+         word = TERM,
+         freq = starts_with("tweets"))
+
+
+docDF_text2 = docDF_text %>% 
+  filter(!POS2 %in% c("非自立", "サ変接続")) 
+
+
+# wordcloud ---------------------------------------------------------------
+
+wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf, 
+          scale = c(3.5, 0.25), # c(size, width)
+          ordered.colors = FALSE,
+          random.order = FALSE, random.color = FALSE, rot.per = 3.5, 
+          colors = brewer.pal(10, "Set3")) #brewer.pal(8, "Dark2")) 
+
+
+# wordcloud2 --------------------------------------------------------------
+
+df <- docDF_text2 %>% 
+  arrange(desc(freq)) %>% 
+  filter(freq < 1000) %>% 
+  select(word, freq)
+
+
+wordcloud2(data = df, size = 1, color = "random-light")
+wordcloud2(data = df, size = 1, color = "random-dark", 
+           shuffle = FALSE, shape = 'circle') 
+wordcloud2(data = df, size = 1, 
+           minRotation = -pi/6, maxRotation = -pi/6,
+           color = ifelse(df[,2] > 100, "red", "skyblue"),
+           shuffle = FALSE, shape = 'pentagon') 
+
+
+```
+
+## 参考文献
+* テキストマイニングについての本
+  + [Text Mining with R](https://www.tidytextmining.com/)
+  + [RによるやさしいテキストマイニングKindle版](https://www.amazon.co.jp/R%E3%81%AB%E3%82%88%E3%82%8B%E3%82%84%E3%81%95%E3%81%97%E3%81%84%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%83%9E%E3%82%A4%E3%83%8B%E3%83%B3%E3%82%B0-%E5%B0%8F%E6%9E%97%E9%9B%84%E4%B8%80%E9%83%8E-ebook/dp/B06W2MPXSL/ref=sr_1_4?dchild=1&hvadid=335559703608&hvdev=c&jp-ad-ap=0&keywords=r%E3%81%AB%E3%82%88%E3%82%8B%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%83%9E%E3%82%A4%E3%83%8B%E3%83%B3%E3%82%B0&qid=1610185315&sr=8-4&tag=yahhyd-22)  
+
+
+* とても参考になりました。ありがとうございます！
+  + [【R】TwitterAPIとMeCabとwordcloud使い、人のツイートの単語出現頻度を可視化する](https://miyastyle.net/twitterapi-wordcloud#index_id8)
+  + [【Rでテキストマイニング】他人のタイムラインをWord Cloudで可視化してみる](https://www.randpy.tokyo/entry/r_wordcloud)
+  + [Rでワードクラウドを作成してみる](https://qiita.com/Sota_N/items/dfd435c4ebee29e100f7)
+
+
+* wordcouldをもっと自由に扱う為の、RDocument達。
+  + [wordcloud](https://www.rdocumentation.org/packages/wordcloud/versions/2.6/topics/wordcloud)
+  + [wordcloud2](https://www.rdocumentation.org/packages/wordcloud2/versions/0.2.1/topics/wordcloud2)
