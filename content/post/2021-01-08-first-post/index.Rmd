@@ -35,6 +35,7 @@ slug: first-post
   + GithubとRstudioの連携のさせ方。
   + コマンドプロンプトの使い方。
   + `blogdown`の使い方を抑えること。
+  + HUGOという謎コード
 
 
 とにかく、盛りだくさんだった。
@@ -57,4 +58,5 @@ slug: first-post
 [RSTUDIOではグラブれないけど、ブログれる](https://ytake2.github.io/blog2/post/blogdown/)
 
 [今さら聞けない！ターミナルの使い方【初心者向け】](https://techacademy.jp/magazine/5155)
+
 [Mainroad](https://github.com/Vimux/mainroad)
