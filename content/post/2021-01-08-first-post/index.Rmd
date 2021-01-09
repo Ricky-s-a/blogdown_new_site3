@@ -48,9 +48,13 @@ slug: first-post
 
 ### 参考文献
 
-[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)　
+
 [blogdown: Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/)
+
 [Github 入門](https://kunisatolab.github.io/main/how-to-github.html)
+
 [RSTUDIOではグラブれないけど、ブログれる](https://ytake2.github.io/blog2/post/blogdown/)
+
 [今さら聞けない！ターミナルの使い方【初心者向け】](https://techacademy.jp/magazine/5155)
 [Mainroad](https://github.com/Vimux/mainroad)
