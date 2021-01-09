@@ -20,7 +20,7 @@ hasCJKLanguage = true
     weight = 1
 [[menu.main]]
     name = "About"
-    url = "/about2/"
+    url = "/about/"
 
 [[menu.main]]
     name = ""
