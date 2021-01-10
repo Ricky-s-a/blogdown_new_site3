@@ -76,6 +76,10 @@ wordcloud2(data = df, size = 1, color = "random-light")
 wordcloud2(data = df, size = 1, color = "random-dark", 
            shuffle = FALSE, shape = 'circle') 
 
+wordcloud2(data = df, size = 1, 
+           minRotation = -pi/6, maxRotation = -pi/6,
+           color = ifelse(df[,2] > 100, "red", "skyblue"),
+           shuffle = FALSE, shape = 'pentagon') 
 ```
 
 もう一つ。
@@ -95,10 +99,11 @@ wordcloud2(data = df, size = 1,
            shuffle = FALSE, shape = 'pentagon') 
 ```
 
+  
 ## 結論
 
-鬼滅商品の売れ行きがえぐいORツイッターにて鬼滅商戦が発生している模様。　
-
+鬼滅商品の売れ行きがえぐいORツイッターにて鬼滅商戦が発生している模様。  
+  
 
 ##  最後に、、、
 いかがだったでしょうか？
