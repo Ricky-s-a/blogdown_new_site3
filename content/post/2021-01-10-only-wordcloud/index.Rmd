@@ -23,9 +23,11 @@ RMarkdownで使おうとするとTwitterのAPIを取得してくださいとい�
 とにかく全コードをみたい人は、一番下の全コードを参照してください。
 
 ## 環境
-Rstudio
-R version 4.0.3 (2020-10-10)
-Windows10
+Rstudio 
+
+R version 4.0.3 (2020-10-10)　
+
+Windows10　
 
 
 ## パッケーッジを用意する
@@ -63,7 +65,7 @@ wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf,
 
 
 さすがにしょぼすぎるので、パッケージ`Wordcloud2`を使ってワードクラウドを作りましょう。
-```{r}
+```{r wordcloud2}
 df <- docDF_text2 %>% 
   arrange(desc(freq)) %>% 
   filter(freq < 1000) %>% 
@@ -75,14 +77,14 @@ wordcloud2(data = df, size = 1, color = "random-light")
 ```
 
 もう一つ。
-```{r}
+```{r, dependson=wordcloud2}
 wordcloud2(data = df, size = 1, color = "random-dark", 
            shuffle = FALSE, shape = 'circle') 
 
 ```
 
 さらにもう一つ。形等を変えることもできます。
-```{r}
+```{r dependson = wordcloud2}
 wordcloud2(data = df, size = 1, 
            minRotation = -pi/6, maxRotation = -pi/6,
            color = ifelse(df[,2] > 100, "red", "skyblue"),
