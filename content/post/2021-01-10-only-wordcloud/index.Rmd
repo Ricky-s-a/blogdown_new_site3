@@ -30,7 +30,7 @@ Windows10　
 
 
 ## パッケージを用意する
-```{r, include = FALSE, message = FALSE}
+```{r, echo=FALSE, message = FALSE}
 Packages <- c("tidyverse","RMeCab", "wordcloud", "wordcloud2")
 lapply(Packages, library, character.only = TRUE)
 ```
@@ -42,7 +42,7 @@ lapply(Packages, library, character.only = TRUE)
 ここからは、`RMeCab`での作業になります。
 今回は、** 鬼滅 **に対する印象を調べたかった為、形容詞と名詞を抽出しました。
 サ変接続は、動詞として扱うため除きました。非自立の形容詞は、品詞としてトピックの印象をよく表さない為、排除しています。
-```{r dodDF_text2, cache=TRUE}
+```{r dodDF_text2, cache=TRUE, message=FALSE}
 docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
   select(everything(), 
          word = TERM,
@@ -64,7 +64,7 @@ wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf,
 
 
 さすがにしょぼすぎるので、パッケージ`Wordcloud2`を使ってワードクラウドを作りましょう。
-```{r wordcloud2, cash = TRUE, dependson=docDF_text2}
+```{r wordcloud2, cash = TRUE, dependson=docDF_text2, collapse=TRUE}
 df <- docDF_text2 %>% 
   arrange(desc(freq)) %>% 
   filter(freq < 1000) %>% 
@@ -72,6 +72,9 @@ df <- docDF_text2 %>%
 
 
 wordcloud2(data = df, size = 1, color = "random-light")
+
+wordcloud2(data = df, size = 1, color = "random-dark", 
+           shuffle = FALSE, shape = 'circle') 
 
 ```
 
@@ -91,6 +94,7 @@ wordcloud2(data = df, size = 1,
            color = ifelse(df[,2] > 100, "red", "skyblue"),
            shuffle = FALSE, shape = 'pentagon') 
 ```
+
 ## 結論
 
 鬼滅商品の売れ行きがえぐいORツイッターにて鬼滅商戦が発生している模様。　
@@ -110,7 +114,7 @@ adios！
 
 ## 全コード
 
-```{r}
+```{r, results='hide'}
 
 # RMeCab ------------------------------------------------------------------
 
