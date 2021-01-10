@@ -73,13 +73,6 @@ df <- docDF_text2 %>%
 
 wordcloud2(data = df, size = 1, color = "random-light")
 
-wordcloud2(data = df, size = 1, color = "random-dark", 
-           shuffle = FALSE, shape = 'circle') 
-
-wordcloud2(data = df, size = 1, 
-           minRotation = -pi/6, maxRotation = -pi/6,
-           color = ifelse(df[,2] > 100, "red", "skyblue"),
-           shuffle = FALSE, shape = 'pentagon') 
 ```
 
 もう一つ。
