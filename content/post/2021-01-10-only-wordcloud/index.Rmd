@@ -86,17 +86,13 @@ wordcloud2(data = df, size = 1, color = "random-dark",
 さらにもう一つ。形等を変えることもできます。
 ```{r, dependson = wordcloud2}
 
-df <- docDF_text2 %>% 
-  arrange(desc(freq)) %>% 
-  filter(freq < 1000) %>% 
-  select(word, freq)
-
 wordcloud2(data = df, size = 1, 
            minRotation = -pi/6, maxRotation = -pi/6,
            color = ifelse(df[,2] > 100, "red", "skyblue"),
            shuffle = FALSE, shape = 'pentagon') 
 ```
 ## 結論
+
 鬼滅商品の売れ行きがえぐいORツイッターにて鬼滅商戦が発生している模様。　
 
 
