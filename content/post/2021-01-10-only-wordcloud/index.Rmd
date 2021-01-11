@@ -33,12 +33,12 @@ Windows10　
 
 ## パッケージを用意する
 ```{r, eval=FALSE}
-Packages <- c("tidyverse","RMeCab", "wordcloud", "wordcloud2")
+Packages <- c("tidyverse","RMeCab" "DT", "wordcloud", "wordcloud2")
 lapply(Packages, library, character.only = TRUE)
 ```
 
 ```{r, include=FALSE}
-Packages <- c("tidyverse","RMeCab", "wordcloud", "wordcloud2")
+Packages <- c("tidyverse","RMeCab","DT", "wordcloud", "wordcloud2")
 lapply(Packages, library, character.only = TRUE)
 ```
 ## データを読み込む
@@ -49,26 +49,19 @@ lapply(Packages, library, character.only = TRUE)
 ここからは、`RMeCab`での作業になります。
 今回は、** 鬼滅 **に対する印象を調べたかった為、形容詞と名詞を抽出しました。
 サ変接続は、動詞として扱うため除きました。非自立の形容詞は、品詞としてトピックの印象をよく表さない為、排除しています。
-```{r eval=FALSE}
-docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
+
+
+```{r dodDF_text2, cache=TRUE, message=FALSE, include=TRUE}
+docDF_text <- docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
   select(everything(), 
          word = TERM,
          freq = starts_with("tweets"))
 
+docDF_text2 <- docDF_text %>% 
+  filter(!POS2 %in% c("非自立", "サ変接続")) %>% 
+  arrange(desc(freq))
 
-docDF_text2 = docDF_text %>% 
-  filter(!POS2 %in% c("非自立", "サ変接続")) 
-```
-
-```{r dodDF_text2, cache=TRUE, message=FALSE, include=FALSE}
-docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
-  select(everything(), 
-         word = TERM,
-         freq = starts_with("tweets"))
-
-
-docDF_text2 = docDF_text %>% 
-  filter(!POS2 %in% c("非自立", "サ変接続")) 
+datatable(docDF_text2, rownames = FALSE)
 ```
 ## wordcloudを作る
 まずは、パッケージ`wordcloud`を使ってグラフを作ります。
@@ -82,10 +75,11 @@ wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf,
 
 
 さすがにしょぼすぎるので、パッケージ`Wordcloud2`を使ってワードクラウドを作りましょう。
+今回は、形は、五角形、100回以上出現している単語を赤で、それ以外を青という条件でで表示させてみました。
 ```{r wordcloud2, cache=TRUE, dependson=docDF_text2}
 df <- docDF_text2 %>% 
   arrange(desc(freq)) %>% 
-  filter(freq < 1000) %>% 
+  filter(freq < 1000) %>% #”鬼”、”滅”の文字以外で頻出単語を抽出したい。
   select(word, freq)
 
 
