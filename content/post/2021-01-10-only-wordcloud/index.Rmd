@@ -1,5 +1,5 @@
 ---
-title: ワードクラウドを作ってみた。
+title: ワードクラウドを作ってみた
 author: Rikiya Honda
 date: '2021-01-10'
 slug: only-wordcloud
@@ -15,7 +15,9 @@ thumbnail: ''
 おはようございます！
 今日は、テキストデータを分析して、ワードクラウドなるものを作ろうと思います！
 
-本当は、Twittterからテキストデータを取得して、ワードクラウドを作るところまでを記事にしたかったのですが、パッケージ`rtweet`は、TwitterのAPIなしでは、RMarkdownで使えなかったので、テキストデータの取得＆データを整えるところは、また今度の機会にnoteにしようと思います！
+本当は、Twittterからテキストデータを取得して、ワードクラウドを作るところまでを記事にしたかったのですが、
+パッケージ`rtweet`は、TwitterのAPIなしでは、RMarkdownで使えませんでした！
+なので、テキストデータの取得＆データを整えるところは、また今度の機会にnoteにしようと思います！
 
 では、コードを書いていきましょう！
 
@@ -30,19 +32,24 @@ Windows10　
 
 
 ## パッケージを用意する
-```{r, echo=FALSE, message = FALSE}
+```{r, eval=FALSE}
+Packages <- c("tidyverse","RMeCab", "wordcloud", "wordcloud2")
+lapply(Packages, library, character.only = TRUE)
+```
+
+```{r, include=FALSE}
 Packages <- c("tidyverse","RMeCab", "wordcloud", "wordcloud2")
 lapply(Packages, library, character.only = TRUE)
 ```
 ## データを読み込む
 今回は、事前にツイッターからテキストデータをダウンロードしました。
-鬼滅の刃が人気なので、** 鬼滅 **を含むツイートを1000件取得し、事前にデータを整えておきました。
+鬼滅の刃が人気なので、**鬼滅** を含むツイートを1000件取得し、事前にデータ解析しやすい形に整えておきました。
 
-## 形態素解析を実行する。
+## 形態素解析を実行する
 ここからは、`RMeCab`での作業になります。
 今回は、** 鬼滅 **に対する印象を調べたかった為、形容詞と名詞を抽出しました。
 サ変接続は、動詞として扱うため除きました。非自立の形容詞は、品詞としてトピックの印象をよく表さない為、排除しています。
-```{r dodDF_text2, cache=TRUE, message=FALSE}
+```{r eval=FALSE}
 docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
   select(everything(), 
          word = TERM,
@@ -52,7 +59,18 @@ docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞
 docDF_text2 = docDF_text %>% 
   filter(!POS2 %in% c("非自立", "サ変接続")) 
 ```
-## wordcloudを作る。
+
+```{r dodDF_text2, cache=TRUE, message=FALSE, include=FALSE}
+docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
+  select(everything(), 
+         word = TERM,
+         freq = starts_with("tweets"))
+
+
+docDF_text2 = docDF_text %>% 
+  filter(!POS2 %in% c("非自立", "サ変接続")) 
+```
+## wordcloudを作る
 まずは、パッケージ`wordcloud`を使ってグラフを作ります。
 ```{r, dependson=docDF_text2}
 wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf, 
@@ -64,27 +82,12 @@ wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf,
 
 
 さすがにしょぼすぎるので、パッケージ`Wordcloud2`を使ってワードクラウドを作りましょう。
-```{r wordcloud2, cash = TRUE, dependson=docDF_text2, collapse=TRUE}
+```{r wordcloud2, cache=TRUE, dependson=docDF_text2}
 df <- docDF_text2 %>% 
   arrange(desc(freq)) %>% 
   filter(freq < 1000) %>% 
   select(word, freq)
 
-
-wordcloud2(data = df, size = 1, color = "random-light")
-
-```
-
-もう一つ。
-```{r, dependson=wordcloud2}
-
-wordcloud2(data = df, size = 1, color = "random-dark", 
-           shuffle = FALSE, shape = 'circle') 
-
-```
-
-さらにもう一つ。形等を変えることもできます。
-```{r, dependson = wordcloud2}
 
 wordcloud2(data = df, size = 1, 
            minRotation = -pi/6, maxRotation = -pi/6,
@@ -100,23 +103,22 @@ wordcloud2(data = df, size = 1,
 
 ##  最後に、、、
 いかがだったでしょうか？
-今度は、ツイッターからのデータ取得、ネットワーク図に関しての情報を共有したいと思います！
+パッケージ`wordcloud2`面白いですよね～
 
-あと、書いてて思ったのが、なぜ形容詞と名詞にしたのか、理解が欠けていますね、、、
+
+今度は、ツイッターからのデータ取得、ネットワーク図に関しての情報を加えて共有したいと思います！
+あと、記事書いてて思ったのが、なぜ形容詞と名詞にしたのか、理解が欠けていますね、、、
 
 それらも含めて、引き続きテキストマイニングの勉強をしていきたいと思います！
-
 最後まで見ていただいてありがとうございました！
 
 adios！
 
 ## 全コード
 
-```{r, results='hide'}
+```{r, eval=FALSE}
 
 # RMeCab ------------------------------------------------------------------
-
-
 docDF_text = docDF("tweets_text_all.txt", type = 1, pos = c("名詞", "形容詞")) %>% 
   select(everything(), 
          word = TERM,
@@ -128,7 +130,6 @@ docDF_text2 = docDF_text %>%
 
 
 # wordcloud ---------------------------------------------------------------
-
 wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf, 
           scale = c(3.5, 0.25), # c(size, width)
           ordered.colors = FALSE,
@@ -137,22 +138,15 @@ wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf,
 
 
 # wordcloud2 --------------------------------------------------------------
-
 df <- docDF_text2 %>% 
   arrange(desc(freq)) %>% 
   filter(freq < 1000) %>% 
   select(word, freq)
 
-
-wordcloud2(data = df, size = 1, color = "random-light")
-wordcloud2(data = df, size = 1, color = "random-dark", 
-           shuffle = FALSE, shape = 'circle') 
 wordcloud2(data = df, size = 1, 
            minRotation = -pi/6, maxRotation = -pi/6,
            color = ifelse(df[,2] > 100, "red", "skyblue"),
            shuffle = FALSE, shape = 'pentagon') 
-
-
 ```
 
 ## 参考文献
