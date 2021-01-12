@@ -41,6 +41,7 @@ lapply(Packages, library, character.only = TRUE)
 Packages <- c("tidyverse","RMeCab","DT", "wordcloud", "wordcloud2")
 lapply(Packages, library, character.only = TRUE)
 ```
+
 ## データを読み込む
 今回は、事前にツイッターからテキストデータをダウンロードしました。
 鬼滅の刃が人気なので、**鬼滅** を含むツイートを1000件取得し、事前にデータ解析しやすい形に整えておきました。
@@ -63,7 +64,9 @@ docDF_text2 <- docDF_text %>%
 
 datatable(docDF_text2, rownames = FALSE)
 ```
+
 ## wordcloudを作る
+
 まずは、パッケージ`wordcloud`を使ってグラフを作ります。
 ```{r, dependson=docDF_text2}
 wordcloud(docDF_text2$word, docDF_text2$freq, min.freq=20, max.words = Inf, 
@@ -96,6 +99,7 @@ wordcloud2(data = df, size = 1,
   
 
 ##  最後に、、、
+
 いかがだったでしょうか？
 パッケージ`wordcloud2`面白いですよね～
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>finance on Rikiya&#39;s blog</title>
+    <link>/tags/finance/</link>
+    <description>Recent content in finance on Rikiya&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/finance/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>資産運用計画をRで計算してみようと思ったけど…</title>
+      <link>/post/asset-management1/</link>
+      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/asset-management1/</guid>
+      <description>こんにちは！ 最初に言っておきますが、今日は、資産運用計画をRで計算しようとしましたが、上手く出ませんでした。 その理由は、いくつかありますが、</description>
+    </item>
+    
+  </channel>
+</rss>
