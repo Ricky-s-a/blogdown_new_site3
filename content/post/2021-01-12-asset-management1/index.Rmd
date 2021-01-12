@@ -88,14 +88,14 @@ datatable(plan)
 
 ## グラフ表示
 
-```{r}
+```{r, comment=FALSE}
 ggplot(plan, aes(x = m)) +
   geom_smooth(aes(y = cum_ms, color= "毎月貯金(金利なし）")) +
   geom_smooth(aes(y = cum_ms_r_moment, color = "毎月運用(金利あり）")) +
   scale_y_continuous(labels = comma) +
   scale_x_continuous(breaks = seq(0, 24, by = 3)) +
   xlab("運用経過累積月（ヶ月）") +
-  ylab("運用金額　（万円）")
+  ylab("運用金額　（円）") +
   labs(title = "貯金積み立て金利ありvs.金利なし",
        subtitle = "金利ありだと、約100万の差ができる")
 ```
@@ -103,7 +103,7 @@ ggplot(plan, aes(x = m)) +
 
 ## データフレームを自動で作れる関数を作る
 
-```{r}
+```{r saving_plan, cache=TRUE}
 saving_plan <- function(Month, Save, R) {
   m <- 1:Month # １ヶ月目から、Monthヶ月目の期末まで
   ms <- rep(Save, length(m)) 　
@@ -126,19 +126,19 @@ saving_plan <- function(Month, Save, R) {
 ### 試しに変数を入れてみる
 
 
-```{r}
+```{r, dependson=saving_plan}
 df <- saving_plan(24, 5, 0.05) %>% round(digits = 2)
 datatable(df)
 ```
 
 ## 複数のプランを比べる
 
-```{r}
+```{r, dependson=saving_plan}
 
 ### 複数のプランをつくる。
-A <- saving_plan(24, 5, 0.05)
-B <- saving_plan(24, 5, 0.075)
-C <- saving_plan(24, 5, 0.1)
+A <- saving_plan(24, 50000, 0.05)
+B <- saving_plan(24, 50000, 0.075)
+C <- saving_plan(24, 50000, 0.1)
 
 ### 複数のプランを作る際に必要な項目に絞る
 plans <- data.frame(A[1],A[6],B[6], C[6]) %>% as_tibble()
@@ -156,11 +156,18 @@ datatable(plans2)
 
 ## グラフ化する
 
-```{r}
+```{r , comment=FALSE}
 ggplot(plans2, aes(x = Month)) +
   geom_smooth(aes(y = caseA, color = "caseC")) +
   geom_smooth(aes(y = caseB, color = "caseB")) +
-  geom_smooth(aes(y = caseC, color = "caseA")) 
+  geom_smooth(aes(y = caseC, color = "caseA")) + 
+  scale_y_continuous(labels = comma) +
+  scale_x_continuous(breaks = seq(0, 24, by = 3)) +
+  xlab("運用経過累積月（ヶ月）") +
+  ylab("運用金額　（円）") +
+  labs(title = "貯金積み立てプラン比較",
+       subtitle = "")
+  
 
 ```
 
@@ -171,7 +178,7 @@ ggplot(plans2, aes(x = Month)) +
 ## 前提条件
 * `interest rate`は、期末に支払われる。
 * 途中で貯蓄を引き出すことはできない。
-* 金利と毎月の貯金額は一定→
+* 金利と毎月の貯金額は一定→×
 + →月々の貯金を時間と共に増加させる
 + →金利は金利を固定ではなく、金利を`R`%を平均値とする正規分布に近似する複利に変える。(リスク資産で運用する場合を想定する。)
 * 初月の貯金額は、`Save`万円で、変数` Increase_by `の等比数列とする。
@@ -212,8 +219,12 @@ ggplot(plan3, aes(x = m)) +
   geom_smooth(aes(y = cum_ms_r_moment, colour = "積み立て（金利あり）")) +
   geom_smooth(aes(y = cum_ms, colour = "積み立て（金利なし）")) +
   scale_y_continuous(labels = comma) +
-  xlab("ヶ月") +
-  ylab("円")
+  scale_x_continuous(breaks = seq(0, 24, by = 3)) +
+  xlab("運用経過累積月（ヶ月）") +
+  ylab("運用金額　（円）") +
+  labs(title = "貯金積み立て金利ありvs.金利なし",
+       subtitle = "")
+  
 ```
 
 
