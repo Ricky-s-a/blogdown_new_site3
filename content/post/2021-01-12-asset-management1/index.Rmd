@@ -15,18 +15,20 @@ thumbnail: ''
 最初に言っておきますが、今日は、資産運用計画をRで計算しようとしましたが、上手く出ませんでした。
 
 その理由は、いくつかありますが、特に
+
 * 金融系の知識が足りない。
 * R言語を意のままに操れていない。
 
 というのが挙げられます。
 
 なので、今日は完全に分析半ばで記事が終わります！
+(若干の書き捨て感が否めない、、、たぶん、あとで分かりやすいよう書き直します！)
 
 それでもいいという優しい方、読んでいただければ僕の励みになります！
 
 では、見ていきましょう！
 
-# やろうとしている（していた）こと
+## やろうとしている（していた）こと
 複雑な資本の運用計算をRで簡単にすませたい！！
 
 今回、エクセルではなく、R言語でやりたいと思った理由は、いくつかのケースを並行して考えたかったからです。
@@ -34,13 +36,17 @@ thumbnail: ''
 そのようないくつかの変数の組み合わせを数十年というスパンで分析したい！と思うと、エクセルだとなかなか厳しいんですよね。
 なので、Rを使ってやってみました。
 
-# 環境
-```{r}
+
+
+# 分析フロー
+
+## 環境
+```{r, results=}
 version
 ```
 
 
-# パッケージの準備
+## パッケージの準備
 
 ```{r, results='hide'}
 Packages <- c("tidyverse", "ggplot2", "DT", "scales")
@@ -48,7 +54,7 @@ lapply(Packages, library, character.only = TRUE)
 ```
 
 
-# 前提条件
+## 前提条件
 * interest rateは、期末に支払われる。
 * 途中で貯蓄を引き出すことはできない。
 * 金利と毎月の貯金額は一定。
@@ -58,7 +64,7 @@ lapply(Packages, library, character.only = TRUE)
 
 まず、最初は単純化した条件で計算してみます。
 
-# 変数の準備
+## 変数の準備
 ```{r}
 m <- 1:24 # 1か月目から、24か月目の期末まで
 ms <- rep(5, length(m)) 　# 毎月5万円の積み立て
@@ -73,14 +79,16 @@ ms_r2 <- ms * r2　# 毎月の積立金額 * 利子率
 cum_ms_r2_future <- cumsum(ms_r2) # 24か月目の項目以外は無視
 ```
 
-# データフレーム化
+## データフレーム化
+
 ```{r}
 plan <- data.frame(m, ms, r, ms_r, cum_ms, cum_ms_r_moment, percent,
-                   n, r2, ms_r2, cum_ms_r2_future) 
+                   n, r2, ms_r2, cum_ms_r2_future) %>% round(digits = 2)
 
 datatable(plan)
 ```
-# グラフ表示
+
+## グラフ表示
 
 ```{r}
 ggplot(plan, aes(x = m)) +
@@ -94,7 +102,124 @@ ggplot(plan, aes(x = m)) +
 ```
 
 
-#最後に、、、
+## データフレームを自動で作れる関数を作る
+
+```{r}
+saving_plan <- function(Month, Save, R) {
+  m <- 1:Month # 一か月目から、24か月目の期末まで
+  ms <- rep(Save, length(m)) 　
+  r <- rep(R, length(m))
+  ms_r <- ms * (1 + r)
+  cum_ms <- cumsum(ms) # 金利なしver.の貯金額を知りたい
+  cum_ms_r_moment <- (Save * (1 + R) - (Save * (1 + R) ^ (m + 1))) / (1 - (1 + R))  # その時の運用額累計を表示したい
+  percent <- cum_ms_r_moment / cum_ms # 金利ありｖｓ金利なしを比較したい
+  n <- Month:1　# 貯金開始１か月目の貯金額に対しては24回金利のcompoundがある
+  r2 <- (1 + r / 12) ^ seq(length(n):1) # 2年後の視点から見て、毎月の金利が結果いくらになるのか知りたい
+  cum_ms_r_future <- cumsum(ms_r2) # 24か月目の項目以外は無視
+  
+  plan <- data.frame(m, ms, r, ms_r, cum_ms, cum_ms_r_moment, percent,
+                     n, r2, cum_ms_r_future)
+}
+
+```
+
+
+### 試しに変数を入れてみる
+
+
+```{r}
+df <- saving_plan(24, 5, 0.05) %>% round(digits = 2)
+datatable(df)
+```
+
+## 複数のプランを比べる
+
+```{r}
+
+### 複数のプランをつくる。
+A <- saving_plan(24, 5, 0.05)
+B <- saving_plan(24, 5, 0.075)
+C <- saving_plan(24, 5, 0.1)
+
+### 複数のプランを作る際に必要な項目に絞る
+plans <- data.frame(A[1],A[6],B[6], C[6]) %>% as_tibble()
+plans2 <- plans %>% 
+  select(
+    Month = m, 
+    caseA = cum_ms_r_moment,
+    caseB = cum_ms_r_moment.1,
+    caseC = cum_ms_r_moment.2
+  ) %>% 
+  round(digits = 2)
+
+datatable(plans2)
+```
+
+## グラフ化する
+
+```{r}
+ggplot(plans2, aes(x = Month)) +
+  geom_smooth(aes(y = caseA, color = "caseC")) +
+  geom_smooth(aes(y = caseB, color = "caseB")) +
+  geom_smooth(aes(y = caseC, color = "caseA")) 
+
+```
+
+
+# モデルを複雑化する 
+(そろそろエクセルじゃ限界か？)
+
+## 前提条件
+* `interest rate`は、期末に支払われる。
+* 途中で貯蓄を引き出すことはできない。
+* 金利と毎月の貯金額は一定。
++ →月々の貯金を時間と共に増加させる
++ →金利は金利を固定ではなく、金利を`R`%を平均値とする正規分布に近似する複利に変える。(リスク資産で運用する場合を想定する。)
+* 初月の貯金額は、`Save`万円で、変数` Increase_by `の等比数列とする。
+* 運用期間は、`Month`か月）
+
+## 関数を作る
+
+```{r}
+saving_plan2 <- function(Month, Save_first, Increase_by, R, SD) {
+  m <- 1:Month # 一か月目から、mか月目の期末まで
+  ms <- seq(Save_first, by = Increase_by, length.out = Month)  　
+  r <- rnorm(n = Month, mean = R, sd = SD)
+  ms_r <- ms * (1 + r)
+  cum_ms <- cumsum(ms) # 金利なしver.の貯金額を知りたい
+  cum_ms_r_moment <- (ms * (1 + R) - (ms * (1 + R) ^ (m + 1))) / (1 - (1 + R))  # その時の運用額累計を表示したい
+  percent <- cum_ms_r_moment / cum_ms # 金利ありｖｓ金利なしを比較したい
+  n <- Month:1　# 貯金開始１か月目の貯金額に対しては24回金利のcompoundがある
+  r2 <- (1 + r / 12) ^ seq(length(n):1) # mヶ月後の視点から見て、毎月の金利が結果いくらになるのか知りたい
+  cum_ms_r_future <- cumsum(ms_r2) # mか月目の項目以外は無視
+  
+  plan <- data.frame(m, ms, r, ms_r, cum_ms, cum_ms_r_moment, percent,
+                     n, r2, cum_ms_r_future)
+}
+```
+
+
+### 確認する
+
+```{r}
+plan3 <- saving_plan2(24, 50000, 1000, 0.05, 1) %>% round(digits = 2)
+datatable(plan3)
+```
+
+### グラフ化する
+
+```{r}
+ggplot(plan3, aes(x = m)) +
+  geom_smooth(aes(y = cum_ms_r_moment, colour = "積み立て（金利あり）")) +
+  geom_smooth(aes(y = cum_ms, colour = "積み立て（金利なし）")) +
+  scale_y_continuous(labels = comma) +
+  xlab("ヶ月") +
+  ylab("円")
+```
+
+
+
+## 最後に、、、
 とりあえず、関数と図をプロットできる形にはできたのですが、リスク資産のボラティリティや、グラフィックツールとしての`ggplot2`の知識が足りないと思うので、いったんここで、将来の運用戦略を練るのは、お休みしようと思います。
 
 * 次回やりたいとおもっていること。
@@ -103,7 +228,7 @@ ggplot(plan, aes(x = m)) +
 + 資産運用の際のボラティリティの肌感を身に着ける。
 + さらに、複数の資産と組み合わせて、ポートフォリオを作り、リスクを分散させたモデルを使った場合の運用ケースを比べる。
 
-## 学んだこと
+### 学んだこと
 自作関数での分析は初めてに近かったため、学ぶことが多かったので簡単にまとめておきます。
 
 * デバッグの重要性。
@@ -141,7 +266,8 @@ cum_ms <- cumsum(ms) # 金利なしver.の貯金額を知りたい
 cum_ms_r_moment <- (5 * (1.05) - (5 * 1.05 ^ (1:24 + 1))) / (1 - 1.05)  # その時の運用額累計を表示したい
 percent <- cum_ms_r_moment / cum_ms # 金利ありｖｓ金利なしを比較したい
 n <- 24:1　# 貯金開始１か月目の貯金額に対しては24回金利のcompoundがある
-r2 <- (1 + r / 12) ^ sort(length(n):1, decreasing = TRUE) # 2年後の視点から見て、毎月の金利が結果いくらになるのか知りたい
+r2 <- (1 + r / 12) ^ sort(length(n):1, decreasing = TRUE)
+#2年後の視点から見て、毎月の金利が結果いくらになるのか知りたい
 ms_r2 <- ms * r2
 cum_ms_r2_future <- cumsum(ms_r2) # 24か月目の項目以外は無視
 
@@ -175,7 +301,7 @@ saving_plan <- function(Month, Save, R) {
 }
 
 df <- saving_plan(24, 5, 0.05)
-df
+datatable(df)
 
 ## 複数のプランを比べる
 
@@ -232,12 +358,13 @@ saving_plan2 <- function(Month, Save_first, Increase_by, R, SD) {
                      n, r2, cum_ms_r_future)
 }
 
+###確認する
+
 plan3 <- saving_plan2(24, 50000, 1000, 0.05, 1)
 
 
-###確認する
-head(df)
-library(scales)
+### グラフ化する
+
 ggplot(plan3, aes(x = m)) +
   geom_smooth(aes(y = cum_ms_r_moment, colour = "積み立て（金利あり）")) +
   geom_smooth(aes(y = cum_ms, colour = "積み立て（金利なし）")) +

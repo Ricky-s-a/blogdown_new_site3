@@ -1,5 +1,5 @@
 ---
-title: 時間の言い方
+title: 時間の英語表現
 author: Rikiya Honda
 date: '2021-01-12'
 slug: how-to-describe-time
@@ -29,6 +29,7 @@ thumbnail: ''
 * 10 minites to five
 
 上から順番に、
+
 * 「5時を10分回っている」
 * 「6時を5分すぎている」
 * 「6時を15分過ぎている」
@@ -36,7 +37,7 @@ thumbnail: ''
 * 「6時15分過ぎ」
 * 「5時10分前」
 
-ポイントは、キリの良い数字の時は、「minites」をつける方がよりbritishっぽいらしん事です！
+ポイントは、キリの良い数字の時は「minites」をつける方がよりbritishっぽいらしい事です！
 ん～ややこしい！！
 
 

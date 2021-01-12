@@ -65,6 +65,7 @@ docDF_text2 <- docDF_text %>%
 datatable(docDF_text2, rownames = FALSE)
 ```
 
+
 ## wordcloudを作る
 
 まずは、パッケージ`wordcloud`を使ってグラフを作ります。
