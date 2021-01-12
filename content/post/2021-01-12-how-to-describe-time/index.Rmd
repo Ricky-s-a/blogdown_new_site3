@@ -43,8 +43,8 @@ thumbnail: ''
 
 ## a year and a half と half and a year
 
-* a year and half = 1.5 year
-* halfand a year = 0.5 year
+* a year and a half = 1.5 year
+* half and a year = 0.5 year
 
 数字で表現して欲しいですね~
 
