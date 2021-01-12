@@ -12,50 +12,48 @@ thumbnail: ''
 ---
 こんにちは！
 
-最初に言っておきますが、今日は、資産運用計画をRで計算しようとしましたが、上手く出ませんでした。
+最初に言っておきますが、今回は資産運用計画をRで計算しようとしましたが、上手く出来ませんでした。
 
 その理由は、いくつかありますが、特に
 
 * 金融系の知識が足りない。
 * R言語を意のままに操れていない。
 
-というのが挙げられます。
+というのが主な原因です。また、知識を身に着けてから再チャレンジしたいですね！
 
 なので、今日は完全に分析半ばで記事が終わります！
-(若干の書き捨て感が否めない、、、たぶん、あとで分かりやすいよう書き直します！)
+(若干の書き捨て感が否めないので、あとで分かりやすいよう書き直します！)
 
-それでもいいという優しい方、読んでいただければ僕の励みになります！
-
-では、見ていきましょう！
+それでもいいという優しい方、一緒にコードを見ていきましょう！
 
 ## やろうとしている（していた）こと
 複雑な資本の運用計算をRで簡単にすませたい！！
 
-今回、エクセルではなく、R言語でやりたいと思った理由は、いくつかのケースを並行して考えたかったからです。
-例えば、利子率って、投資する資産によって変わるし、加えて、時間軸を書ければ、その変動幅も変わります。
-そのようないくつかの変数の組み合わせを数十年というスパンで分析したい！と思うと、エクセルだとなかなか厳しいんですよね。
-なので、Rを使ってやってみました。
+今回エクセルではなく、R言語で計算したいと思った理由は、いくつかのケースを並行して考えたかったからです。
+例えば、利子率を変化させてその計画自体を比較したり（例：投資する資産を変える）、時間によって利子率が変動するパターンもシミュレーションしたかったからです。
+
+こんな感じで、いくつかの変数の組み合わせを数十年というスパンで分析したい！と思うと、エクセルだとなかなか厳しかったので、Rを使って分析してみました。
 
 
 
 # 分析フロー
 
 ## 環境
-```{r, results=}
+```{r}
 version
 ```
 
 
 ## パッケージの準備
 
-```{r, results='hide'}
+```{r, echo=TRUE, results='hide', message=FALSE}
 Packages <- c("tidyverse", "ggplot2", "DT", "scales")
 lapply(Packages, library, character.only = TRUE)
 ```
 
 
 ## 前提条件
-* interest rateは、期末に支払われる。
+* `interest rate`は、期末に支払われる。
 * 途中で貯蓄を引き出すことはできない。
 * 金利と毎月の貯金額は一定。
 * 金利は複利で、年利５％で、毎月組み込まれる式。
@@ -67,11 +65,11 @@ lapply(Packages, library, character.only = TRUE)
 ## 変数の準備
 ```{r}
 m <- 1:24 # 1か月目から、24か月目の期末まで
-ms <- rep(5, length(m)) 　# 毎月5万円の積み立て
+ms <- rep(50000, length(m)) 　# 毎月5万円の積み立て
 r <- rep(0.05, length(m))　# 5%の利子率（固定）
 ms_r <- ms * (1 + r)　# 毎月の積立金額 * 利子率
 cum_ms <- cumsum(ms) # 金利なしver.の貯金額を知りたい
-cum_ms_r_moment <- (5 * (1.05) - (5 * 1.05 ^ (1:24 + 1))) / (1 - 1.05)  # その時の運用額累計を表示したい
+cum_ms_r_moment <- (50000 * (1.05) - (50000 * 1.05 ^ (1:24 + 1))) / (1 - 1.05)  # その時の運用額累計を表示したい
 percent <- cum_ms_r_moment / cum_ms # 金利ありｖｓ金利なしを比較したい
 n <- 24:1　# 貯金開始１か月目の貯金額に対しては24回金利のcompoundがある
 r2 <- (1 + r / 12) ^ sort(length(n):1, decreasing = TRUE) # 2年後の視点から見て、毎月の金利が結果いくらになるのか知りたい
@@ -98,7 +96,8 @@ ggplot(plan, aes(x = m)) +
   scale_x_continuous(breaks = seq(0, 24, by = 3)) +
   xlab("運用経過累積月（ヶ月）") +
   ylab("運用金額　（万円）")
-  
+  labs(title = "貯金積み立て金利ありvs.金利なし",
+       subtitle = "金利ありだと、約100万の差ができる")
 ```
 
 
@@ -106,16 +105,16 @@ ggplot(plan, aes(x = m)) +
 
 ```{r}
 saving_plan <- function(Month, Save, R) {
-  m <- 1:Month # 一か月目から、24か月目の期末まで
+  m <- 1:Month # １ヶ月目から、Monthヶ月目の期末まで
   ms <- rep(Save, length(m)) 　
   r <- rep(R, length(m))
   ms_r <- ms * (1 + r)
   cum_ms <- cumsum(ms) # 金利なしver.の貯金額を知りたい
   cum_ms_r_moment <- (Save * (1 + R) - (Save * (1 + R) ^ (m + 1))) / (1 - (1 + R))  # その時の運用額累計を表示したい
   percent <- cum_ms_r_moment / cum_ms # 金利ありｖｓ金利なしを比較したい
-  n <- Month:1　# 貯金開始１か月目の貯金額に対しては24回金利のcompoundがある
+  n <- Month:1　# 貯金開始１か月目の貯金額に対してはn回金利のcompoundがある
   r2 <- (1 + r / 12) ^ seq(length(n):1) # 2年後の視点から見て、毎月の金利が結果いくらになるのか知りたい
-  cum_ms_r_future <- cumsum(ms_r2) # 24か月目の項目以外は無視
+  cum_ms_r_future <- cumsum(ms_r2) # Monthヶ月目の項目以外は無視
   
   plan <- data.frame(m, ms, r, ms_r, cum_ms, cum_ms_r_moment, percent,
                      n, r2, cum_ms_r_future)
@@ -172,26 +171,26 @@ ggplot(plans2, aes(x = Month)) +
 ## 前提条件
 * `interest rate`は、期末に支払われる。
 * 途中で貯蓄を引き出すことはできない。
-* 金利と毎月の貯金額は一定。
+* 金利と毎月の貯金額は一定→
 + →月々の貯金を時間と共に増加させる
 + →金利は金利を固定ではなく、金利を`R`%を平均値とする正規分布に近似する複利に変える。(リスク資産で運用する場合を想定する。)
 * 初月の貯金額は、`Save`万円で、変数` Increase_by `の等比数列とする。
-* 運用期間は、`Month`か月）
+* 運用期間は、`Month`ヶ月）
 
 ## 関数を作る
 
 ```{r}
 saving_plan2 <- function(Month, Save_first, Increase_by, R, SD) {
-  m <- 1:Month # 一か月目から、mか月目の期末まで
+  m <- 1:Month # 一か月目から、Monthか月目の期末まで
   ms <- seq(Save_first, by = Increase_by, length.out = Month)  　
   r <- rnorm(n = Month, mean = R, sd = SD)
   ms_r <- ms * (1 + r)
   cum_ms <- cumsum(ms) # 金利なしver.の貯金額を知りたい
   cum_ms_r_moment <- (ms * (1 + R) - (ms * (1 + R) ^ (m + 1))) / (1 - (1 + R))  # その時の運用額累計を表示したい
   percent <- cum_ms_r_moment / cum_ms # 金利ありｖｓ金利なしを比較したい
-  n <- Month:1　# 貯金開始１か月目の貯金額に対しては24回金利のcompoundがある
+  n <- Month:1　# 貯金開始１ヶ月目の貯金額に対してはn回金利のcompoundがある
   r2 <- (1 + r / 12) ^ seq(length(n):1) # mヶ月後の視点から見て、毎月の金利が結果いくらになるのか知りたい
-  cum_ms_r_future <- cumsum(ms_r2) # mか月目の項目以外は無視
+  cum_ms_r_future <- cumsum(ms_r2) # Monthヶ月目の項目以外は無視
   
   plan <- data.frame(m, ms, r, ms_r, cum_ms, cum_ms_r_moment, percent,
                      n, r2, cum_ms_r_future)
