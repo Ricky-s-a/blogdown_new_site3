@@ -9,6 +9,17 @@ tags: []
 description: ''
 thumbnail: ''
 ---
+---
+title: 掛け算の表を一瞬で出来る関数
+author: Rikiya Honda
+date: '2021-01-13'
+slug: multiplication-table
+categories:
+  - blog
+tags: []
+description: ''
+thumbnail: ''
+---
 こんにちは！
 
 掛け算を一瞬で作れる行列を作ってみたいと思って、そんな関数を作ってみました。
@@ -34,74 +45,3 @@ for (i in 1:9) { #
 }
 print(result) # 作った行列を確認する
 ```
-### nの段に対応できるようにする
-
-```{r}
-n <- 9 # nに9を代入
-result1 <- matrix(nrow = n, ncol = n)
-for (i in 1:n) { # 9をnに置き換える
-  result1[i,] <- seq(i, by = i, length.out = n)
-}
-print(result1)
-```
-
-### nの段に対応できるkakezan2という関数を作る
-
-```{r}
-kakezan2 <- function(n) {
-  result2 <- matrix(nrow = n, ncol = n)
-  for (i in 1:n) {
-    result2[i,] <- seq(i, by = i, length.out = n)
-  }
-  colnames(result2) <- c(1:n)
-  rownames(result2) <- c(1:n)
-  print(result2)
-}
-```
-
-
-### 確認する
-
-```{r}
-df <- kakezan2(19)
-```
-
-
-```{r, eval = FALSE}
-## ５の段
-x <- seq(5, by = 5, length.out = 10)
-
-## 関数化する
-
-### 具体的に１～９の段を作る
-
-result <- matrix(nrow = 9, ncol = 9) # 行列を場所を用意
-for (i in 1:9) { # 
-  result[i,] <- seq(i, by = i, length.out = 9)
-}
-print(result) # 作った行列を確認する
-
-## nの段に対応できるようにする
-n <- 9 # nに9を代入
-result1 <- matrix(nrow = n, ncol = n)
-for (i in 1:n) { # 9をnに置き換える
-  result1[i,] <- seq(i, by = i, length.out = n)
-}
-print(result1)
-
-## nの段に対応できるkakezan2という関数を作る
-
-kakezan2 <- function(n) {
-  result2 <- matrix(nrow = n, ncol = n)
-  for (i in 1:n) {
-    result2[i,] <- seq(i, by = i, length.out = n)
-  }
-  colnames(result2) <- c(1:n)
-  rownames(result2) <- c(1:n)
-  print(result2)
-}
-
-### 確認する
-df <- kakezan2(19)
-```
-
