@@ -1,0 +1,62 @@
+---
+title: 掛け算の行列を一瞬で表示させる関数
+author: Rikiya Honda
+date: '2021-01-13'
+slug: multiplication-table2
+categories:
+  - blog
+tags: []
+description: ''
+thumbnail: ''
+---
+
+こんにちは！
+
+掛け算を一瞬で作れる行列を作ってみたいと思って、そんな関数を作ってみました。
+
+では、みていきましょう！
+
+## 環境
+```{r}
+version
+```
+
+
+## パッケージの準備
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("DT")
+lapply(Packages, library, character.only = TRUE)
+```
+
+## 関数を作成
+
+```{r}
+kakezan2 <- function(n) {
+  result2 <- matrix(nrow = n, ncol = n)
+  for (i in 1:n) {
+    result2[i,] <- seq(i, by = i, length.out = n)
+  }
+  colnames(result2) <- c(1:n)
+  rownames(result2) <- c(1:n)
+  print(result2)
+}
+```
+
+## 確認する
+
+どこかの国で19桁まで掛け算を覚えさせられると聞いた記憶があるので、19を入力してみます。
+
+```{r}
+kakezan2(19)
+```
+
+うまく表示されました！
+
+## 最後に、、、
+
+今回は、遊びで作った関数なので何かに応用できる気がしませんww
+
+最後まで読んでいただきありがとうございます！
+
+Adios!!

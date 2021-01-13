@@ -141,3 +141,79 @@ ggplot(plan3, aes(x = m)) +
 今日もありがとうございました！！
 
 Adios!!
+  
+
+
+  
+x <- seq(5, by = 5, length.out = 10)
+
+kakezan <- function(x, Length) {
+  seq(x, by = x, length.out = 9)
+}
+
+n <- c(1:9)
+x <- vector("numeric", 9)
+for (i in 1:9) {
+  x[i] <- seq(i, by = i, length.out = 9)
+}
+
+x <- seq(5, by = 5, length.out = 9)
+
+result <- matrix(nrow = 9, ncol = 9)
+for (i in 1:9) {
+  result[i,] <- seq(i, by = i, length.out = 9)
+}
+result
+
+n <- 9
+result1 <- matrix(nrow = n, ncol = n)
+for (i in 1:n) {
+  result1[i,] <- seq(i, by = i, length.out = n)
+}
+result1
+
+kakezan <- function(n) {
+  result2 <- matrix(nrow = n, ncol = n)
+  for (i in 1:n) {
+    result2[i,] <- seq(i, by = i, length.out = n)
+  }
+  return(result2)
+}
+
+x <- kakezan(9)
+
+kakezan2 <- function(n) {
+  result2 <- matrix(nrow = n, ncol = n)
+  for (i in 1:n) {
+    result2[i,] <- seq(i, by = i, length.out = n)
+  }
+  colnames(result2) <- c(1:n)
+  rownames(result2) <- c(1:n)
+  print(result2)
+}
+
+df <- kakezan2(19)
+
+dnorm(x = 1.97, mean = 0, sd = 1)
+curve(dnorm(x, mean = 0, sd = 1), from = -3, to = 3)
+abline(v = qnorm(0.025))
+abline(v = qnorm(0.975))
+
+qnorm(1-0.975, lower.tail = FALSE) # Prob(Z<z) = 0.975のz値　＊両側検定のとき
+pnorm(1.96, lower.tail = TRUE) # Prob(Z < 1.96)の下側確率　＊両側検定のとき
+
+seq(0, 5, by = 0.01)
+pnorm(0)
+
+library(tidyverse)
+z <- seq(0, 1, by = 0.01)
+matrix(z, ncol = 10, byrow = TRUE)  
+  
+z <- seq(-4, 3.99, by = 0.01)
+Quantile <- pnorm(z)
+Matrix <- matrix(Quantile, ncol = 10, byrow = TRUE)
+colnames(Matrix) <- 0:9
+rownames(Matrix) <- seq(-4, 3.9, by = 0.1) %>% round(digits = 1)
+
+
+

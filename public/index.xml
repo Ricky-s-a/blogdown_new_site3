@@ -6,7 +6,16 @@
     <description>Recent content on Rikiya&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>標準正規分布表を作ってみた</title>
+      <link>/post/standard-normal-distribution/</link>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/standard-normal-distribution/</guid>
+      <description>こんにちは！ 今日は、標準正規分布表を作りたいと思います！ これを作ろうと思った経緯は、 標準正規分布表を見たい ↓ 検索する ↓ いろいろ種類があって面</description>
+    </item>
+    
     <item>
       <title>時間の英語表現</title>
       <link>/post/how-to-describe-time/</link>
@@ -22,7 +31,7 @@
       <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/post/asset-management1/</guid>
-      <description>こんにちは！ 最初に言っておきますが、今日は、資産運用計画をRで計算しようとしましたが、上手く出ませんでした。 その理由は、いくつかありますが、</description>
+      <description>こんにちは！ 最初に言っておきますが、今回は資産運用計画をRで計算しようとしましたが、上手く出来ませんでした。 その理由は、いくつかありますが、</description>
     </item>
     
     <item>
