@@ -19,3 +19,4 @@ title: About
 このウェブサイト自体のコードは、[Github](https://github.com/Ricky-s-a/blogdown_new_site3)に保存してあります。
 
 This is a "hello world" example website with the [**blogdown**](https://github.com/rstudio/blogdown) package. The theme was forked from [@jrutheiser/hugo-lithium-theme](https://github.com/jrutheiser/hugo-lithium-theme) and modified by [Yihui Xie](https://github.com/yihui/hugo-lithium).
+

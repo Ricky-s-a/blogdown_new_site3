@@ -1,0 +1,220 @@
+---
+title: ポケモンデータをスクレイピング
+author: Rikiya Honda
+date: '2021-01-17'
+slug: pokemon-webscraping
+categories:
+  - note
+tags:
+  - rvest
+description: ''
+thumbnail: ''
+---
+
+こんにちは！
+
+今回は、ポケモン386種を簡単にウェブスクレイピングできたので、その方法をメモしておこうと思います！
+
+全行程は、全部で4つです。
+
+* データを取得（ポケモン名と能力データは別
+* データを整える
+* データを保存
+* データを可視化
+
+では、見ていきましょう！
+
+## 環境
+
+```{r}
+version
+```
+
+## パッケージ
+
+```{r, comment=false}
+library(rvest)
+library(tidyverse)
+library(stringr)
+library(DT)
+```
+
+## データを取得
+
+### ポケモン名データを取ってくる
+
+```{r, eval=FALSE}
+name_all <- ""
+for (i in 1:386) {
+  url_all <- paste0("https://yakkun.com/data/zukan/n", i, ".htm")
+  data_all <- read_html(url_all)
+  media_all <- html_nodes(data_all, "#contents div:nth-child(3) table:nth-child(1) tr:nth-child(1) th") %>% 
+    html_text()
+  name_all <- c(name_all, media_all)
+}
+```
+
+#### 確認
+
+### 能力値データを取ってくる
+
+```{r, eval=FALSE}
+ability_all <- data.frame()
+for (i in 1:386) {
+  url_all <- paste0("https://yakkun.com/data/zukan/n", i, ".htm")
+  data_all <- read_html(url_all)
+  media_all <- html_nodes(data_all, ".center tr td.left") %>% 
+    html_text() 
+  ability_all <- rbind(ability_all, media_all)
+}
+```
+
+## データを整える
+
+```{r, eval=FALSE}
+# name と　abilityを融合
+pokemon_df <- cbind(name = name_all, ability_all)
+
+# tidy data
+
+pokemon_df2 <- pokemon_df[ ,c(1:7, 19:20)] 
+
+
+for (i in 2:7) {
+  pokemon_df2[,i] <- str_remove(pokemon_df[,i], pattern = "\\((.*?)\\)") %>% str_squish()
+}
+
+pokemon_df2[,8] <- str_replace_all(pokemon_df2[,8], pattern = "歩", replacement = "")
+
+
+pokemon_df2[,2:8] <- as.double(pokemon_df2[2:8])
+
+for (i in 2:8) {
+  pokemon_df2[,i] <- as.double(pokemon_df2[,i])
+}
+```
+
+
+## データを保存
+
+```{r, eval=FALSE}
+saveRDS(pokemon_df2, "pokemon_df.RData")
+```
+
+## データを確認
+
+何だがごつい名前のポケモンが上位に来てますね～
+例えば、「こうげき」の欄で見てみると、「ケッキング」やら、「レックウザ」といったものが上位に来てます。
+
+```{r}
+pokemon_df <- readRDS("pokemon_df.RData")
+datatable(pokemon_df)
+```
+
+## データを可視化する
+
+とりあえず、能力値の分布を観察してみました。
+
+```{r}
+ggplot(pokemon_df) +
+  geom_density(aes(HP), colour = "red", fill = "red", alpha = 0.1) +
+  geom_density(aes(こうげき), colour = "yellow", fill = "yellow", alpha = 0.1) +
+  geom_density(aes(ぼうぎょ), colour = "blue", fill = "blue", alpha = 0.1) +
+  geom_density(aes(とくこう), colour = "grey", fill = "grey", alpha = 0.1) +
+  scale_x_continuous("各セクションの能力値") +
+  scale_y_continuous("確率密度") +
+  labs(title = "各セクションの能力の分布", 
+       subtitle = "→ どの能力も同じような分布を持っていることが分かる") +
+  theme_classic() 
+```
+
+###　たまごの歩数の箱ひげ図を表示させる
+
+```{r}
+ggplot(pokemon_df, aes(タマゴ歩数)) +
+  geom_histogram(binwidth = 1000)
+```
+
+## 最後に、、、
+いかがだったでしょうか？？
+
+ポケモンのデータを集めてみましたが、属性等の情報がないと詳しくは調べれられませんね。
+
+最後まで読んでいただきありがとうございました！！
+
+Adios!!
+
+
+## 全コード
+
+```{r, eval=FALSE}
+library(rvest)
+library(tidyverse)
+library(stringr)
+
+
+# ポケモン名データを取ってくる
+
+name_all <- ""
+for (i in 1:386) {
+  url_all <- paste0("https://yakkun.com/data/zukan/n", i, ".htm")
+  data_all <- read_html(url_all)
+  media_all <- html_nodes(data_all, "#contents div:nth-child(3) table:nth-child(1) tr:nth-child(1) th") %>% 
+    html_text()
+  name_all <- c(name_all, media_all)
+}
+
+name_all <- name_all[c(-1, -2)] %>%
+  
+  
+# 能力値データを取ってくる
+
+ability_all <- data.frame()
+for (i in 1:386) {
+  url_all <- paste0("https://yakkun.com/data/zukan/n", i, ".htm")
+  data_all <- read_html(url_all)
+  media_all <- html_nodes(data_all, ".center tr td.left") %>% 
+    html_text() 
+  ability_all <- rbind(ability_all, media_all)
+}
+
+# col namesを設定する
+url <- "https://yakkun.com/data/zukan/n1.htm"
+data <- read_html(url)
+media_col <- html_nodes(data, ".center tr .c1") %>% 
+  html_text()
+
+colnames(ability_all) <- media_col
+
+# name と　abilityを融合
+pokemon_df <- cbind(name = name_all, ability_all)
+
+# tidy data
+
+pokemon_df2 <- pokemon_df[ ,c(1:7, 19:20)] 
+
+
+for (i in 2:7) {
+  pokemon_df2[,i] <- str_remove(pokemon_df[,i], pattern = "\\((.*?)\\)") %>% str_squish()
+}
+
+pokemon_df2[,8] <- str_replace_all(pokemon_df2[,8], pattern = "歩", replacement = "")
+
+
+pokemon_df2[,2:8] <- as.double(pokemon_df2[2:8])
+
+for (i in 2:8) {
+  pokemon_df2[,i] <- as.double(pokemon_df2[,i])
+}
+
+# データを保存
+saveRDS(pokemon_df2, "pokemon_df.RData")
+
+# データを確認
+df <- readRDS("pokemon_df.RData")
+
+
+# plot
+
+```
+

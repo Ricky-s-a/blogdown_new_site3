@@ -6,7 +6,16 @@
     <description>Recent content in blog on Rikiya&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>掛け算の行列を一瞬で表示させる関数</title>
+      <link>/post/multiplication-table2/</link>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/multiplication-table2/</guid>
+      <description>こんにちは！ 掛け算を一瞬で作れる行列を作ってみたいと思って、そんな関数を作ってみました。 では、みていきましょう！ 環境 version ## _ ## platform x86_64-w64-mingw32 ## arch x86_64 ## os mingw32</description>
+    </item>
+    
     <item>
       <title>時間の英語表現</title>
       <link>/post/how-to-describe-time/</link>
