@@ -32,7 +32,7 @@ version
 
 ## パッケージ
 
-```{r, comment=FALSE}
+```{r, echo=TRUE, results='hide', message=FALSE}
 library(rvest)
 library(tidyverse)
 library(stringr)
