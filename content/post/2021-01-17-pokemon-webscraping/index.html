@@ -53,21 +53,8 @@ thumbnail: ''
 </div>
 <div id="パッケージ" class="section level2">
 <h2>パッケージ</h2>
-<pre class="r"><code>library(rvest)</code></pre>
-<pre><code>FALSE  要求されたパッケージ xml2 をロード中です</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>FALSE -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
-<pre><code>FALSE √ ggplot2 3.3.3     √ purrr   0.3.4
-FALSE √ tibble  3.0.4     √ dplyr   1.0.2
-FALSE √ tidyr   1.1.2     √ stringr 1.4.0
-FALSE √ readr   1.4.0     √ forcats 0.5.0</code></pre>
-<pre><code>FALSE -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-FALSE x dplyr::filter()         masks stats::filter()
-FALSE x readr::guess_encoding() masks rvest::guess_encoding()
-FALSE x dplyr::lag()            masks stats::lag()
-FALSE x purrr::pluck()          masks rvest::pluck()</code></pre>
-<pre class="r"><code>library(stringr)
-library(DT)</code></pre>
+<pre class="r"><code>Packages &lt;- c(&quot;rvest&quot;, &quot;tidyverse&quot;, &quot;stringr&quot;, &quot;DT&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
 </div>
 <div id="データを取得" class="section level2">
 <h2>データを取得</h2>
@@ -126,8 +113,8 @@ for (i in 2:8) {
 </div>
 <div id="データを確認" class="section level2">
 <h2>データを確認</h2>
-<p>何だがごつい名前のポケモンが上位に来てますね～
-例えば、「こうげき」の欄で見てみると、「ケッキング」やら、「レックウザ」といったものが上位に来てます。</p>
+<p>何だがごつい名前のポケモンが上位に来てますね～</p>
+<p>例えば、「こうげき」の欄で見てみると、「ケッキング」やら、「レックウザ」といったものが上位に来てます。</p>
 <pre class="r"><code>pokemon_df &lt;- readRDS(&quot;pokemon_df.RData&quot;)
 datatable(pokemon_df)</code></pre>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
