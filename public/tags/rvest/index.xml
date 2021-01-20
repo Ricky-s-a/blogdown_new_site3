@@ -6,14 +6,14 @@
     <description>Recent content in rvest on Rikiya&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 14 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/rvest/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/rvest/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>ウェブスクレイピング</title>
-      <link>/post/web-scraping/</link>
-      <pubDate>Thu, 14 Jan 2021 00:00:00 +0000</pubDate>
+      <title>ポケモンデータをウェブスクレイピング</title>
+      <link>/post/pokemon-webscraping/</link>
+      <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/web-scraping/</guid>
-      <description></description>
+      <guid>/post/pokemon-webscraping/</guid>
+      <description>こんにちは！ 今回は、ポケモン386種を簡単にウェブスクレイピングできたので、その方法をメモしておこうと思います！ 全行程は、全部で4つです。 デ</description>
     </item>
     
   </channel>
