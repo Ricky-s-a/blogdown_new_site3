@@ -89,10 +89,17 @@ pokemon %>%
   geom_text(aes(label = Name), check_overlap = FALSE) +
   xlab("攻撃力") +
   ylab("防御力") +
-  labs(caption = "データ出典は記事下部記載")
+  labs(caption = "データ出典は記事下部記載") +
+  geom_text(
+    data = filter(pokemon, Name == "GroudonPrimal Groudon"), 
+    aes(label = Name),
+    colour = "orange"
+  )
 ```
 
-Prime Groundonってこんなやつでしたww
+攻撃力も守備力も高い、GroudonPrimal Groundonってどんな奴やねん！！って思って調べたら、こんなやつでしたww
+
+どんな名前なのこのポケモンwww
 
 ![Primal Groudon](https://img.pokemondb.net/artwork/large/groudon-primal.jpg)
 
@@ -140,6 +147,13 @@ pokemon %>%
 ```
 
 属性が2つ存在するものと、1つだけのポケモンがいるようですね～
+
+
+最後に、世代ごとのポケモンの分布を表示させましょう。
+```{r}
+ggplot(pokemon, aes(Atk, group = Generation, colour = Generation, fill = Generation)) +
+  geom_density(alpha = 0.1)
+```
 
 ## 最後に、、、
 ggplot2を使うとかなりきれいな図が書けますね。
