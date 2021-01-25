@@ -1,0 +1,159 @@
+---
+title: ポケモンデータを可視化する
+author: Rikiya Honda
+date: '2021-01-25'
+slug: visualisation-pokemon
+categories:
+  - note
+tags:
+  - ggplot2
+description: ''
+thumbnail: ''
+---
+
+こんにちは！！
+
+今回は、ggplot2のアウトプットも兼ねて、ポケモンのデータを可視化してみました！
+
+それでは、見ていきましょう！
+
+
+## 環境
+
+```{r}
+version
+```
+
+## パッケージ
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse", "stringr", "DT")
+lapply(Packages, library, character.only = TRUE)
+```
+
+## データを取得
+今回は、[Github](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6)で公開されていた[csv](https://data.wingarc.com/csv-excel-2-19747#:~:text=CSV%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%A8CSV%E3%81%AF,%E5%BD%A2%E5%BC%8F%E3%81%A7%E8%A1%A8%E7%8F%BE%E3%81%95%E3%82%8C%E3%81%BE%E3%81%99%E3%80%82)を使ってポケモンデータの可視化を行いたいと思います！
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+url <- "https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv"
+pokemon <- read_csv(url)
+
+# ggplot2に読み込みやすいようにする
+
+colnames(pokemon)[3] <- "Type_1"
+colnames(pokemon)[4] <- "Type_2"
+colnames(pokemon)[7] <- "Atk"
+colnames(pokemon)[8] <- "Def"
+colnames(pokemon)[9] <- "Sp.Atk" 
+colnames(pokemon)[10] <- "Sp.Def"
+```
+```{r}
+# データを確認する
+datatable(pokemon[,-1], 
+          extensions = 'Scroller', 
+          options = list(
+            deferRender = TRUE,
+            dom = "frtiS",
+            scrollY = 200,
+            scrollCollapse = TRUE
+))
+```
+
+## 可視化する
+今回は、データのモデリングはやりませんが、簡単な仮説を持って可視化をしてみました。
+
+** 仮説 ** 伝説ポケモンの方が攻守ともに能力が高いのではないか。
+
+なんとなく予想はつくかもしれませんが、今回はデータの可視化が目的なのでやっていきましょう！
+
+```{r, message=FALSE}
+ggplot(pokemon, aes(Atk, Def, colour = Legendary)) +
+  geom_point(alpha = .5) +
+  gghighlight::gghighlight() +
+  facet_wrap(vars(Legendary)) +
+  xlab("攻撃力") +
+  ylab("防御力") +
+  labs(title = "伝説ポケモン(TRUE)と通常ポケモン(FALSE)の攻撃力と守備力の分布",
+       subtitle = "伝説ポケモンの方が攻守ともに能力が高く、分散が大きいようにみえる",
+       caption = "データ出典は記事下部記載")
+```
+
+
+伝説ポケモンってどんな名前なのか気になりますよね？？
+
+ggplot2には、geom_textという関数？が入っているので簡単にテキストをプロットすることもできます。
+
+```{r, message=FALSE}
+pokemon %>% 
+  filter(Legendary == TRUE) %>% 
+  ggplot(aes(Atk, Def)) +
+  geom_text(aes(label = Name), check_overlap = FALSE) +
+  xlab("攻撃力") +
+  ylab("防御力") +
+  labs(caption = "データ出典は記事下部記載")
+```
+
+Prime Groundonってこんなやつでしたww
+
+![Primal Groudon](https://img.pokemondb.net/artwork/large/groudon-primal.jpg)
+
+おまけ：単純に属性ごとの分布が気になったので、一覧にしてみました。
+
+```{r, message=FALSE}
+# Type_1の属性をプロットしてみる
+ggplot(pokemon, aes(Atk, Def, colour = Type_1)) +
+  geom_point(alpha = .5) +
+  gghighlight::gghighlight() +
+  facet_wrap(vars(Type_1)) +
+  xlab("攻撃力") +
+  ylab("防御力") +
+  labs(caption = "データ出典は記事下部記載")
+```
+
+```{r, message=FALSE}
+# Type_2の属性をプロットしてみる
+ggplot(pokemon, aes(Atk, Def, colour = Type_2)) +
+  geom_point(alpha = .5) +
+  gghighlight::gghighlight() +
+  facet_wrap(vars(Type_2)) +
+  xlab("攻撃力") +
+  ylab("防御力") +
+  labs(caption = "データ出典は記事下部記載")
+```
+
+ここで気になるのがNA（Not Available)の欄ですよね。
+
+ちなみに、僕はポケモンをしたことがないので、属性1、2が何を示しているのかは全く分かりませんww
+
+```{r, message=FALSE}
+# Type_2 がNAのポケモンは何を示しているのか
+pokemon %>% 
+  filter(is.na(Type_2)) %>% 
+  ggplot(aes(Atk, Def, colour = Type_1)) +
+    geom_point(alpha = .5) +
+    xlab("攻撃力") +
+    ylab("防御力") +
+    labs(title = "タイプ２にデータがなかったポケモンのプロット",
+         subtitle = "タイプ１には所属し、攻撃力&防御力の分布が低い数値に集中している",
+         labs(caption = "データ出典は記事下部記載"))
+  
+  
+```
+
+属性が2つ存在するものと、1つだけのポケモンがいるようですね～
+
+## 最後に、、、
+ggplot2を使うとかなりきれいな図が書けますね。
+
+まだ勉強途中ですが、インタラクティブな図をかけるパッケージがRにはあるので、アップグレードした可視化を今度の機会にやってみたいですね！
+
+最後まで読んでいただきありがとうございました！！
+
+Adios!!
+
+### 参考文献
+・https://rstudio.github.io/DT/
+
+・[ggplot2](https://ggplot2-book.org/)
+
+・[ポケモンデータ](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv)

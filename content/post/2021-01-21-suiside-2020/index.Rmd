@@ -1,0 +1,14 @@
+---
+title: 自殺者統計
+author: Rikiya Honda
+date: '2021-01-21'
+slug: suiside-2020
+categories:
+  - note
+tags:
+  - rvest
+description: ''
+thumbnail: ''
+draft: true
+---
+
