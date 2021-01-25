@@ -78,7 +78,7 @@ datatable(pokemon[,-1],
 <div id="可視化する" class="section level2">
 <h2>可視化する</h2>
 <p>今回は、データのモデリングはやりませんが、簡単な仮説を持って可視化をしてみました。</p>
-<p>** 仮説 ** 伝説ポケモンの方が攻守ともに能力が高いのではないか。</p>
+<p><strong>仮説：伝説ポケモンの方が攻守ともに能力が高いのではないか。</strong></p>
 <p>なんとなく予想はつくかもしれませんが、今回はデータの可視化が目的なのでやっていきましょう！</p>
 <pre class="r"><code>ggplot(pokemon, aes(Atk, Def, colour = Legendary)) +
   geom_point(alpha = .5) +
