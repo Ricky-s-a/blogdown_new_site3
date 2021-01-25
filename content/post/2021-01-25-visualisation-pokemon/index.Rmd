@@ -47,16 +47,15 @@ colnames(pokemon)[8] <- "Def"
 colnames(pokemon)[9] <- "Sp.Atk" 
 colnames(pokemon)[10] <- "Sp.Def"
 ```
+
 ```{r}
 # データを確認する
 datatable(pokemon[,-1], 
+          rownames = FALSE,
           extensions = 'Scroller', 
           options = list(
-            deferRender = TRUE,
-            dom = "frtiS",
-            scrollY = 200,
-            scrollCollapse = TRUE
-))
+            pageLength = 5
+            ))
 ```
 
 ## 可視化する
