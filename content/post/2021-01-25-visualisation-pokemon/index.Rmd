@@ -101,7 +101,7 @@ pokemon %>%
 
 どんな名前なのこのポケモンwww
 
-![Primal Groudon](https://img.pokemondb.net/artwork/large/groudon-primal.jpg)
+![GroudonPrimal Groudon](https://img.pokemondb.net/artwork/large/groudon-primal.jpg)
 
 おまけ：単純に属性ごとの分布が気になったので、一覧にしてみました。
 
