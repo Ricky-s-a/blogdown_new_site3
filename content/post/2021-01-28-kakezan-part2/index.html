@@ -1,0 +1,117 @@
+---
+title: 行列を一瞬で表示させる方法②
+author: Rikiya Honda
+date: '2021-01-28'
+slug: kakezan-part2
+categories:
+  - blog
+tags: []
+description: ''
+thumbnail: ''
+---
+
+
+
+<p>こんにちは！</p>
+<p>今回は、<a href="https://hrikiya.netlify.app/post/2021-01-13-multiplication-table2/multiplication-table2/">前回の記事</a>の関数をアップデートする為に書いています！！</p>
+<p><code>%O</code>%`で掛け算をさせるという記号をこの間初めて知りました。</p>
+<p>今回は、これを使って関数を作っていきたいと思います。</p>
+<div id="環境" class="section level2">
+<h2>環境</h2>
+<pre class="r"><code>version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          4                           
+## minor          0.3                         
+## year           2020                        
+## month          10                          
+## day            10                          
+## svn rev        79318                       
+## language       R                           
+## version.string R version 4.0.3 (2020-10-10)
+## nickname       Bunny-Wunnies Freak Out</code></pre>
+</div>
+<div id="パッケージ" class="section level2">
+<h2>パッケージ</h2>
+<pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
+</div>
+<div id="関数を作る" class="section level2">
+<h2>関数を作る</h2>
+<pre class="r"><code>kakezan3 &lt;- function(n) {
+  df &lt;- 1:n %o% 1:n %&gt;% t()
+  colnames(df) &lt;- c(1:n)
+  rownames(df) &lt;- c(1:n)
+  print(df)
+}</code></pre>
+</div>
+<div id="確認" class="section level2">
+<h2>確認</h2>
+<pre class="r"><code>kakezan3(5)</code></pre>
+<pre><code>##   1  2  3  4  5
+## 1 1  2  3  4  5
+## 2 2  4  6  8 10
+## 3 3  6  9 12 15
+## 4 4  8 12 16 20
+## 5 5 10 15 20 25</code></pre>
+</div>
+<div id="計算スピードを比べる" class="section level2">
+<h2>計算スピードを比べる</h2>
+<p>前回作った関数と今回作った関数、どちらの方が計算スピードが速いのでしょうか？</p>
+<p><code>system.time()</code>を使って計算スピードを比べてみましょう！</p>
+<pre class="r"><code># 前回作った関数を用意
+kakezan2 &lt;- function(n) {
+  result2 &lt;- matrix(nrow = n, ncol = n)
+  for (i in 1:n) {
+    result2[i,] &lt;- seq(i, by = i, length.out = n)
+  }
+  colnames(result2) &lt;- c(1:n)
+  rownames(result2) &lt;- c(1:n)
+  print(result2)
+}
+
+# 20の段まで計算させる。
+
+system.time(kakezan3(10)) </code></pre>
+<pre><code>##     1  2  3  4  5  6  7  8  9  10
+## 1   1  2  3  4  5  6  7  8  9  10
+## 2   2  4  6  8 10 12 14 16 18  20
+## 3   3  6  9 12 15 18 21 24 27  30
+## 4   4  8 12 16 20 24 28 32 36  40
+## 5   5 10 15 20 25 30 35 40 45  50
+## 6   6 12 18 24 30 36 42 48 54  60
+## 7   7 14 21 28 35 42 49 56 63  70
+## 8   8 16 24 32 40 48 56 64 72  80
+## 9   9 18 27 36 45 54 63 72 81  90
+## 10 10 20 30 40 50 60 70 80 90 100</code></pre>
+<pre><code>##    user  system elapsed 
+##       0       0       0</code></pre>
+<pre class="r"><code>system.time(kakezan2(10))</code></pre>
+<pre><code>##     1  2  3  4  5  6  7  8  9  10
+## 1   1  2  3  4  5  6  7  8  9  10
+## 2   2  4  6  8 10 12 14 16 18  20
+## 3   3  6  9 12 15 18 21 24 27  30
+## 4   4  8 12 16 20 24 28 32 36  40
+## 5   5 10 15 20 25 30 35 40 45  50
+## 6   6 12 18 24 30 36 42 48 54  60
+## 7   7 14 21 28 35 42 49 56 63  70
+## 8   8 16 24 32 40 48 56 64 72  80
+## 9   9 18 27 36 45 54 63 72 81  90
+## 10 10 20 30 40 50 60 70 80 90 100</code></pre>
+<pre><code>##    user  system elapsed 
+##    0.02    0.00    0.02</code></pre>
+<p>結果は、elapsedを見て比べます。これは、現実世界での経過時間を表しています。</p>
+<p>詳しくは、<a href="https://www.it-swarm-ja.tech/ja/r/r-systemtime%EF%BC%88exp%EF%BC%89%E5%87%BA%E5%8A%9B%E3%81%A7%E6%B8%AC%E5%AE%9A%E3%81%95%E3%82%8C%E3%82%8B%E3%80%8C%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%80%8D%E3%81%8A%E3%82%88%E3%81%B3%E3%80%8C%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%80%8D%E6%99%82%E9%96%93%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%A7%E3%81%99%E3%81%8B%EF%BC%9F/971392761/">こちら</a>を参照してください。</p>
+<p>2つの関数を比べてみると、kakezan3の方が、kakezan2よりも0.06遅いという結果になりました。</p>
+<p>謎ですね。。</p>
+</div>
+<div id="最後に" class="section level2">
+<h2>最後に、、、</h2>
+<p>計算スピードを速くするには、いろいろな手段があるそうですが、よくわかっていないので、今後勉強していこうと思います！</p>
+<p>今日もありがとうございました。</p>
+<p>Adios!!</p>
+</div>

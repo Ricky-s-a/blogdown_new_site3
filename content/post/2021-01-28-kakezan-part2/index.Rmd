@@ -1,0 +1,104 @@
+---
+title: 行列を一瞬で表示させる方法②
+author: Rikiya Honda
+date: '2021-01-28'
+slug: kakezan-part2
+categories:
+  - blog
+tags: []
+description: ''
+thumbnail: ''
+---
+
+こんにちは！
+
+今回は、[前回の記事](https://hrikiya.netlify.app/post/2021-01-13-multiplication-table2/multiplication-table2/)の関数をアップデートする為に書いています！！
+
+`%O`%`で掛け算をさせるという記号をこの間初めて知りました。
+
+今回は、これを使って関数を作っていきたいと思います。
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+```
+
+
+## 環境
+
+```{r}
+version
+```
+
+## パッケージ
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse")
+lapply(Packages, library, character.only = TRUE)
+```
+
+## 関数を作る
+
+```{r}
+kakezan3 <- function(n) {
+  df <- 1:n %o% 1:n %>% t()
+  colnames(df) <- c(1:n)
+  rownames(df) <- c(1:n)
+  print(df)
+}
+```
+
+## 確認
+
+```{r}
+kakezan3(5)
+```
+
+
+## 計算スピードを比べる
+
+前回作った関数と今回作った関数、どちらの方が計算スピードが速いのでしょうか？
+
+`system.time()`を使って計算スピードを比べてみましょう！
+
+```{r}
+# 前回作った関数を用意
+kakezan2 <- function(n) {
+  result2 <- matrix(nrow = n, ncol = n)
+  for (i in 1:n) {
+    result2[i,] <- seq(i, by = i, length.out = n)
+  }
+  colnames(result2) <- c(1:n)
+  rownames(result2) <- c(1:n)
+  print(result2)
+}
+
+# 20の段まで計算させる。
+
+system.time(kakezan3(10)) 
+system.time(kakezan2(10))
+```
+
+結果は、elapsedを見て比べます。これは、現実世界での経過時間を表しています。
+
+詳しくは、[こちら](https://www.it-swarm-ja.tech/ja/r/r-systemtime%EF%BC%88exp%EF%BC%89%E5%87%BA%E5%8A%9B%E3%81%A7%E6%B8%AC%E5%AE%9A%E3%81%95%E3%82%8C%E3%82%8B%E3%80%8C%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%80%8D%E3%81%8A%E3%82%88%E3%81%B3%E3%80%8C%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%80%8D%E6%99%82%E9%96%93%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%A7%E3%81%99%E3%81%8B%EF%BC%9F/971392761/)を参照してください。
+
+
+2つの関数を比べてみると、kakezan3の方が、kakezan2よりも0.06遅いという結果になりました。
+
+謎ですね。。
+
+
+## 最後に、、、
+
+計算スピードを速くするには、いろいろな手段があるそうですが、よくわかっていないので、今後勉強していこうと思います！
+
+今日もありがとうございました。
+
+Adios!!
+
+
+
