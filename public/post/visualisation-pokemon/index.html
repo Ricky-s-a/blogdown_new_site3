@@ -18,7 +18,7 @@
 <meta itemprop="description" content="こんにちは！！ 今回は、ggplot2のアウトプットも兼ねて、ポケモンのデータを可視化してみました！ それでは、見ていきましょう！ 環境 version ## _ ## platform">
 <meta itemprop="datePublished" content="2021-01-25T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-01-25T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2477">
+<meta itemprop="wordCount" content="2592">
 
 
 
@@ -187,12 +187,18 @@ datatable(pokemon[,-1],
   geom_text(aes(label = Name), check_overlap = FALSE) +
   xlab(&quot;攻撃力&quot;) +
   ylab(&quot;防御力&quot;) +
-  labs(caption = &quot;データ出典は記事下部記載&quot;)</code></pre>
+  labs(caption = &quot;データ出典は記事下部記載&quot;) +
+  geom_text(
+    data = filter(pokemon, Name == &quot;GroudonPrimal Groudon&quot;), 
+    aes(label = Name),
+    colour = &quot;orange&quot;
+  )</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Prime Groundonってこんなやつでしたww</p>
+<p>攻撃力も守備力も高い、GroudonPrimal Groundonってどんな奴やねん！！って思って調べたら、こんなやつでしたww</p>
+<p>どんな名前なのこのポケモンwww</p>
 <div class="figure">
 <img src="https://img.pokemondb.net/artwork/large/groudon-primal.jpg" alt="" />
-<p class="caption">Primal Groudon</p>
+<p class="caption">GroudonPrimal Groudon</p>
 </div>
 <p>おまけ：単純に属性ごとの分布が気になったので、一覧にしてみました。</p>
 <pre class="r"><code># Type_1の属性をプロットしてみる
@@ -227,6 +233,10 @@ pokemon %&gt;%
          labs(caption = &quot;データ出典は記事下部記載&quot;))</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>属性が2つ存在するものと、1つだけのポケモンがいるようですね～</p>
+<p>最後に、世代ごとのポケモンの分布を表示させましょう。</p>
+<pre class="r"><code>ggplot(pokemon, aes(Atk, group = Generation, colour = Generation, fill = Generation)) +
+  geom_density(alpha = 0.1)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="最後に" class="section level2">
 <h2>最後に、、、</h2>
