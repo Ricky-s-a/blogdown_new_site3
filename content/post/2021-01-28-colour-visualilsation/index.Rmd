@@ -85,7 +85,7 @@ Colors <- c("Set3", "Set2", "Set1")
 # 複数の色合い同時に表示させる
 
 Areas <- 
-  purrr::map(.x = Colors, .f = ~{area + scale_fill_brewer(palette = .x)}) %>% 
+  purrr::map(.x = Colors, .f = ~{area + scale_fill_brewer(palette = .x)} + ggtitle(.x)) %>% 
   purrr::reduce(`+`) 
 
 Areas
@@ -97,7 +97,8 @@ Areas
 ```{r}
 Num <- seq(3, 15, by = 3)
 Erupt <-
-  purrr::map(.x = Num, .f = ~{erupt + scale_fill_stepsn(n.breaks = .x, colours = terrain.colors(12))}) %>% 
+  purrr::map(.x = Num, .f = ~{erupt + scale_fill_stepsn(n.breaks = .x, colours = terrain.colors(12)) + 
+      ggtitle(paste("n.breaks = ", .x))}) %>% 
   purrr::reduce(`+`) + plot_layout(byrow = TRUE)
 
 Erupt
@@ -108,7 +109,8 @@ Erupt
 
 Rは、グラフィックがきれいですね。
 
-あと、複数の色を同時に表示させることができるので、エクセルよりも作業効率がいい気がします。
+あと、複数の色を同時に表示させることができるので、色を選ぶ際に、多数同時に表示できるので、
+エクセルよりも作業効率がいい気がします。
 
 ではまた！
 
