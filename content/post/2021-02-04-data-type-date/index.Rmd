@@ -122,7 +122,7 @@ now(tzone = "Asia/Tokyo")　# 現在時刻を表示させる
 
 ```{r}
 as_date(Sys.time()) # 時間を切捨てて、日付のみ表示
-as_datetime()
+as_datetime(Sys.time()) #??
 ```
 
 ## "POSIXct" & "POSIXlt"問題
