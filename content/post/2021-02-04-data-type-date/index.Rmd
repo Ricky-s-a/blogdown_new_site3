@@ -1,0 +1,253 @@
+---
+title: データの型Dateの扱い
+author: Rikiya Honda
+date: '2021-02-04'
+slug: data-type-date
+categories:
+  - note
+tags:
+  - lubridate
+description: ''
+thumbnail: ''
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+```
+
+
+最近時系列分析をする機会があったのですが、chrからDateにデータの型を変更することが巧くできませんでした。
+
+なので、今回は、データの型の一つである、Dateについて備忘録をつけていこうと思います！
+
+
+## 環境
+
+```{r}
+version
+```
+
+## パッケージ
+
+lubridateを今回使います！
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse", "lubridate")
+lapply(Packages, library, character.only = TRUE)
+```
+
+試しにxに"2017/01/01"というデータを代入します。
+
+データの型は、何だと思いますか？
+
+正解は、character（文字列データ）です。
+
+
+```{r}
+(x <- "2017/01/01") %>% class()
+```
+
+つまり、Rに日付として認識させるには、いくつかの手順が必要なのです。
+
+
+## 手順①: as.Dateを()使う
+
+```{r}
+x <- "2017/01/01"
+as.Date(x, "%Y/%m/%d", tz = "Asia/Tokyo") %>% class()
+```
+ちなみに、%~を使って表現されている部分のルールは、こちらになります。
+
+ String	Meaning
+ %S	second (00-59)
+ %M	minute (00-59)
+ %l	hour, in 12-hour clock (1-12)
+ %I	hour, in 12-hour clock (01-12)
+ %p	am/pm
+ %H	hour, in 24-hour clock (00-23)
+ %a	day of week, abbreviated (Mon-Sun)
+ %A	day of week, full (Monday-Sunday)
+ %e	day of month (1-31)
+ %d	day of month (01-31)
+ %m	month, numeric (01-12)
+ %b	month, abbreviated (Jan-Dec)
+ %B	month, full (January-December)
+ %y	year, without century (00-99)
+ %Y	year, with century (0000-9999)
+
+formate()を使うとDateからcharacterにデータの型を変更できます。
+
+
+
+```{r}
+format(Sys.time(), "%a %b %d %X %Y %Z") 
+format(Sys.time(), "%Y-%b-%d-%a %H:%M:%S")
+```
+
+自由自在ですね。
+
+## 手順②: lubridate::ymd()を使う
+
+先に言っておきますけど、断然lubridateで処理した方が便利です。
+
+yとｍとｄの並びを変えるだけで、様々な形のデータに対応できるので、今後はlubridateを使っていこうと思います。
+
+```{r}
+lubridate::ymd("2017/01/15")
+lubridate::ydm("2017/15/Jan")
+lubridate::dmy("15th-January-2017")
+
+```
+
+全て完璧に認識されていますね。
+lubridate様様です。
+
+これで、Rに日付データとして認識させることができたので、今後の為に、時間を扱う関数たちをメモっておきたいと思います！
+
+
+
+## 時間を表示させる関数
+
+```{r}
+Sys.Date() # システム上の日付を表示させる
+Sys.time()　# システム上の時間を表示させる
+today(tzone = "Asia/Tokyo")　# 日付けを表示させる
+now(tzone = "Asia/Tokyo")　# 現在時刻を表示させる
+```
+## 時間切捨て&切り上げ
+
+
+```{r}
+as_date(Sys.time()) # 時間を切捨てて、日付のみ表示
+as_datetime()
+```
+
+## "POSIXct" & "POSIXlt"問題
+
+POSIX**ct**は、calendar timeを表していて、1970/01/01を0秒として現在時刻を表示しています。
+
+```{r}
+ymd("1970/01/01") %>% unclass()
+```
+ymd()で文字列を処理するとPOSIXct型になるらしいです。その為、classを取ると、1970/01/01は”０”として表示されます。
+
+```{r}
+ymd("1980/01/01") %>% unclass()
+```
+10年後の1980/01/01は、365 * 10 + 2 で3652と表示されている。
+あれれ、どういうことこれ？
+
+```{r}
+as.POSIXt("1970/01/01", origin = "1960-01-01") %>% unclass()
+```
+
+ただし、これは０と表示されません。なぜ？？
+
+一方、POSIX**lt**の方は、人間が認知できる時間のまとまりで表現されています。（例：years, months, weeks, days）
+
+現在の時刻を表示させ、そのクラスを取り除いてあげると、POSIXltは、year, month, 等の集まりであることが分かりますが、なぜyearのところが12１となっているのかなど、分からないところがいくつかあります。
+
+```{r}
+as.POSIXlt(now(), "UTC") %>% unclass()
+```
+余談ですが、Rでは、デフォルトのタイムゾーンがUTC（協定世界時）となっているので、時間の計算をするたびにタイムゾーンを設定しておく方が、ミスを未然に防げるらしいです。僕の手元のwindowsでは、なぜか毎回JSTとなっていますが、予期せぬミスを防ぐために、タイムゾーンを設定しようと思います。
+
+## 日付けの数列
+
+日付けの数列は簡単に作れます。
+
+```{r}
+seq(as.Date("2021/01/01"), as.Date("2021/02/01"), by = "week")
+seq(as.Date("2021/01/01"), as.Date("2021/04/01"), by = "2 weeks")
+seq(as.Date("2021/01/01"), as.Date("2021/05/01"), by = "month")
+seq(as.Date("2021/01/01"), as.Date("2021/10/01"), by = "2 months")
+seq(as.Date("2021/01/01"), as.Date("2022/02/01"), by = "year")
+seq(as.Date("2021/01/01"), as.Date("2025/02/01"), by = "2 years")
+```
+
+lubridate::ymd()を使っても日付けの数列を作ることができます。
+
+```{r}
+seq(ymd("2021/01/01"), ymd("2021/01/15"), by = "3 days")
+```
+## 日付けデータの抽出と結合
+
+パッケージ `lubridate`を使えば簡単にできます。
+
+```{r}
+x <- now(tzone = "Asia/Tokyo") # 東京の現在時刻を表示
+year(x) # yearを抽出
+month(x) # monthを抽出
+day(x) # dayを抽出
+hour(x) # hourを抽出
+minute(x) # minuteを抽出
+second(x) # secondを抽出
+```
+
+逆にばらばらの日付&時刻データは`make_date`or`make_datetime`を使えば簡単に結合できます。
+
+```{r}
+make_date(year = 2021, month = 2, day = 14)
+make_datetime(year = 2021, month = 2, day = 14, hour = 23, min = 12, sec = 23, tz = "Asia/Tokyo")
+```
+## ある一定期間の日数を調べたい
+
+```{r}
+yday(ymd("2021/12/31")) #ある年の経過日数
+mday(ymd("2021/12/31")) # ある月の経過日数
+wday(ymd("2021/12/31"), label = TRUE, abbr = TRUE) # ある週の経過日数（or曜日）
+```
+
+## 日付計算
+
+baseRでは、以下のように計算できます。
+
+```{r}
+difftime(ymd("2021/4/3"), ymd("2021/2/4"), units = "auto")
+```
+`difftime(A, B)`と書くと、B - Aと計算されてしまうので、大小関係に注意しましょう。
+
+`map`を使えば、複数の単位で一度に出力させることもできます。
+
+```{r}
+map(.x = c("auto", "secs", "mins", "hours", "days", "weeks"),
+    .f = ~{difftime(ymd("2021/4/3"), ymd("2021/2/4"), units = .x)})
+```
+
+## 期間（duration）を表示させる
+
+以下の関数を使えば、ある期間を秒数で表示させることができます。
+
+例えば、一日が何秒か知りたくなったら、ddays()で表示させることをお勧めします。
+
+```{r}
+dseconds(15)
+dminutes(60)
+dhours(24)
+ddays(1)
+dmonths(3)
+dyears(3)
+```
+
+
+## 最後に、、、
+
+やはり、時間関係のコードは難しいですね。
+
+POSIXltとPOSIXctについては別の機会を設けようと思います。
+
+また、データの型に対する知識が欠けていると感じていたので、今後フォローアップしていきたいです。
+
+今日も最後まで読んでいただきありがとうございます！
+
+Adios!!
+
+## 参考文献
+* [Difference between as.POSIXct/as.POSIXlt and strptime for converting character vectors to POSIXct/POSIXlt](https://stackoverflow.com/questions/10699511/difference-between-as-posixct-as-posixlt-and-strptime-for-converting-character-v)
+* [UNIX時間](https://ja.wikipedia.org/wiki/UNIX%E6%99%82%E9%96%93)
+* [R for Data Science](https://r4ds.had.co.nz/dates-and-times.html)
+* [UTC](https://www.fhs.swiss/jpn/gmt-utc-tai.html#:~:text=%E5%9B%BD%E9%9A%9B%E5%8D%94%E5%AE%9A%E3%81%AB%E3%82%88%E3%82%8A%E3%80%81UTC%E3%81%AF,%E3%81%AF32%E7%A7%92%E3%81%AE%E3%81%BF%E3%81%A7%E3%81%99%E3%80%82)
+* [日付・時間関数Tips大全](http://www.okadajp.org/RWiki/?%E6%97%A5%E4%BB%98%E3%80%81%E6%99%82%E9%96%93%E9%96%A2%E6%95%B0Tips%E5%A4%A7%E5%85%A8)
