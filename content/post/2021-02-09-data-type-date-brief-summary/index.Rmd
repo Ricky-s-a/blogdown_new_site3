@@ -1,15 +1,14 @@
 ---
-title: データの型Dateの扱い
+title: データの型Date(まとめ)
 author: Rikiya Honda
-date: '2021-02-04'
-slug: data-type-date
+date: '2021-02-09'
+slug: data-type-date-brief-summary
 categories:
   - note
 tags:
   - lubridate
 description: ''
 thumbnail: ''
-draft = true
 ---
 
 ```{r setup, include=FALSE}
