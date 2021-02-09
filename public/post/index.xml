@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Rikiya&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Markdownが使えなくなっていた件</title>
+      <link>/post/about-not-able-to-use-rmarkdown/</link>
+      <pubDate>Tue, 09 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/about-not-able-to-use-rmarkdown/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>色の調整</title>
       <link>/post/colour-visualilsation/</link>
