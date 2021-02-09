@@ -1,0 +1,35 @@
+---
+title: ウェブサイト更新再開！
+author: Rikiya Honda
+date: '2021-02-09'
+slug: website-restart
+categories:
+  - blog
+tags:
+  - blogdown
+description: ''
+thumbnail: ''
+---
+
+
+
+<p>こんにちは！！</p>
+<p>久しぶりの投稿ですね。</p>
+<p>ちょっとこのサイトを運営している<code>blogdown</code>というパッケージで問題がおきまして、更新が遅れていました。</p>
+<p>結局のところ<code>R.profile</code>というドキュメントが邪魔をしていたらしく、削除したところ、上手くローカルでの変更がサイトに反映されるようになりました。</p>
+<p><code>R.profile</code>は、<code>getwd()</code>でカレントディレクトリがプロジェクトのあるディレクトリにあることを確認したのち、<code>file.edit("R.profile")</code>とコンソールに打ち込むことで生成されます。</p>
+<p><code>R.profile</code>のを作るメリットは、プロジェクトを立ち上げた時に自動的に読みこまれることです。</p>
+<p>例えば、</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>と<code>R.profile</code>に書いておけば、毎回か必ずそのコードがrunされます。</p>
+<p>沢山のlibraryを使っている時に特に威力を発揮します。</p>
+<p>が、今回は<code>blogdown</code>との間で何らかの障害が発生したらしく、上手くサイトが生成されませんでした。</p>
+<p>追記：
+<code>?blogdown::serve_site()</code>で関数の仕様を確認すると、「RMarkdownでは、毎回は上手くいかないかも。でも、Markdownなら問題なし！」的なことがちゃっかり書いてありました。（訳適当）</p>
+<blockquote>
+<p>this automatic navigation may not always work for R Markdown posts, and you may have to manually refresh your browser. It should work reliably for pure Markdown posts, though.</p>
+</blockquote>
+<p>原因は分からないのですが、結果ウェブの更新を再開できるようになって良かったです。</p>
+<p>では、また次回会いましょう！</p>
+<p>最後まで読んでいただきありがとうございます！</p>
+<p>Adios!!</p>

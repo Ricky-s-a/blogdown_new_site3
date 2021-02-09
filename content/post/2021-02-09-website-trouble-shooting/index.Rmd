@@ -1,12 +1,10 @@
 ---
-title: ウェブサイト更新再開予定
-author: Rikiya Honda
+title: "ウェブサイト更新再開予定"
+author: "Rikiya Honda"
 date: '2021-02-09'
 slug: website-trouble-shooting
-categories:
-  - blog
-tags:
-  - blogdown
+categories: blog
+tags: blogdown
 description: ''
 thumbnail: ''
 ---
