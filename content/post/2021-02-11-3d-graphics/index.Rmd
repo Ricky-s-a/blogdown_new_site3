@@ -8,8 +8,6 @@ categories:
 tags:
   - rgl
   - threejs
-description: ''
-thumbnail: ''
 ---
 
 こんにちは！
@@ -44,6 +42,9 @@ library(tidyverse)
 library(rgl)
 library(threejs)
 
+# plot 3d static graphs
+
+plot3d(xyz) # これはローカル環境でしか動作しない。
 
 # plot 3d graph with `threejs`
 
@@ -75,7 +76,7 @@ xyz <- cbind(sin(theta), cos(theta), theta)
 # plot3dで図を表示させる
 lineid <- plot3d(xyz, type = "l", alpha = 1:0,
                  lwd = 5, col = "blue")["data"]
-lineid
+
 
 # 図を動かす
 browsable(tagList( # tagを作成（たぶん）
@@ -102,6 +103,7 @@ browsable(tagList( # tagを作成（たぶん）
 
 案外、きれいに出力できますね。
 
-では、またの機会に。
+最後まで読んでいきだきありがとうございました。
+
 
 Adios!!
