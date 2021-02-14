@@ -27,7 +27,7 @@ version
 ## パッケージ
 
 ```{r, echo=TRUE, results='hide', message=FALSE}
-Packages <- c("tidyverse", "stringr", "DT")
+Packages <- c("tidyverse", "stringr", "DT", "plotly")
 lapply(Packages, library, character.only = TRUE)
 ```
 
@@ -66,6 +66,7 @@ datatable(pokemon[,-1],
 なんとなく予想はつくかもしれませんが、今回はデータの可視化が目的なのでやっていきましょう！
 
 ```{r, message=FALSE}
+p1 <- 
 ggplot(pokemon, aes(Atk, Def, colour = Legendary)) +
   geom_point(alpha = .5) +
   gghighlight::gghighlight() +
@@ -75,6 +76,8 @@ ggplot(pokemon, aes(Atk, Def, colour = Legendary)) +
   labs(title = "伝説ポケモン(TRUE)と通常ポケモン(FALSE)の攻撃力と守備力の分布",
        subtitle = "伝説ポケモンの方が攻守ともに能力が高く、分散が大きいようにみえる",
        caption = "データ出典は記事下部記載")
+
+ggplotly(p1)
 ```
 
 
@@ -83,6 +86,7 @@ ggplot(pokemon, aes(Atk, Def, colour = Legendary)) +
 ggplot2には、geom_textという関数？が入っているので簡単にテキストをプロットすることもできます。
 
 ```{r, message=FALSE}
+p2 <-
 pokemon %>% 
   filter(Legendary == TRUE) %>% 
   ggplot(aes(Atk, Def)) +
@@ -95,6 +99,8 @@ pokemon %>%
     aes(label = Name),
     colour = "orange"
   )
+
+ggplotly(p2)
 ```
 
 攻撃力も守備力も高い、GroudonPrimal Groundonってどんな奴やねん！！って思って調べたら、こんなやつでしたww
@@ -151,8 +157,11 @@ pokemon %>%
 
 最後に、世代ごとのポケモンの分布を表示させましょう。
 ```{r}
+p3 <- 
 ggplot(pokemon, aes(Atk, group = Generation, colour = Generation, fill = Generation)) +
   geom_density(alpha = 0.1)
+
+ggplotly(p3)
 ```
 
 ## 最後に、、、
