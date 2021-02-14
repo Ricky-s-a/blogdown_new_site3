@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>データの型Date(まとめ) - Rikiya&#39;s blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="データの型Date(まとめ)" />
+<meta property="og:description" content="最近時系列分析をする機会があったのですが、chrからDateにデータの型を変更することが巧くできませんでした。 なので、今回は、データの型の一" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/data-type-date-brief-summary/" />
+<meta property="article:published_time" content="2021-02-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-02-09T00:00:00+00:00" />
+
+		<meta itemprop="name" content="データの型Date(まとめ)">
+<meta itemprop="description" content="最近時系列分析をする機会があったのですが、chrからDateにデータの型を変更することが巧くできませんでした。 なので、今回は、データの型の一">
+<meta itemprop="datePublished" content="2021-02-09T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-02-09T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2456">
+
+
+
+<meta itemprop="keywords" content="lubridate," />
+
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="データの型Date(まとめ)"/>
+<meta name="twitter:description" content="最近時系列分析をする機会があったのですが、chrからDateにデータの型を変更することが巧くできませんでした。 なので、今回は、データの型の一"/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo">
+		<a class="logo__link" href="/" title="A piece of cake" rel="home">
+			<div class="logo__item logo__text">
+					<div class="logo__title">A piece of cake</div>
+					<div class="logo__tagline">But cake is always sweet</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">データの型Date(まとめ)</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Rikiay Honda</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-02-09T00:00:00Z">2021-02-09</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/note/" rel="category">note</a>
+	</span>
+</div></div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		
+	</div>
+</div>
+<div class="content post__content clearfix">
+			
+
+
+<p>最近時系列分析をする機会があったのですが、chrからDateにデータの型を変更することが巧くできませんでした。</p>
+<p>なので、今回は、データの型の一つである、Dateについて備忘録をつけていこうと思います！</p>
+<div id="環境" class="section level2">
+<h2>環境</h2>
+<pre class="r"><code>version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          4                           
+## minor          0.3                         
+## year           2020                        
+## month          10                          
+## day            10                          
+## svn rev        79318                       
+## language       R                           
+## version.string R version 4.0.3 (2020-10-10)
+## nickname       Bunny-Wunnies Freak Out</code></pre>
+</div>
+<div id="パッケージ" class="section level2">
+<h2>パッケージ</h2>
+<p>lubridateを今回使います！</p>
+<pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;, &quot;lubridate&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
+<p>試しにxに“2017/01/01”というデータを代入します。</p>
+<p>データの型は、何だと思いますか？</p>
+<p>正解は、character（文字列データ）です。</p>
+<pre class="r"><code>(x &lt;- &quot;2017/01/01&quot;) %&gt;% class()</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>つまり、Rに日付として認識させるには、いくつかの手順が必要なのです。</p>
+</div>
+<div id="手順①-as.dateを使う" class="section level2">
+<h2>手順①: as.Dateを()使う</h2>
+<pre class="r"><code>x &lt;- &quot;2017/01/01&quot;
+as.Date(x, &quot;%Y/%m/%d&quot;, tz = &quot;Asia/Tokyo&quot;) %&gt;% class()</code></pre>
+<pre><code>## [1] &quot;Date&quot;</code></pre>
+<p>ちなみに、%~を使って表現されている部分のルールは、こちらになります。</p>
+<p>String Meaning</p>
+<p>%S second (00-59)</p>
+<p>%M minute (00-59)</p>
+<p>%l hour, in 12-hour clock (1-12)</p>
+<p>%I hour, in 12-hour clock (01-12)</p>
+<p>%p am/pm</p>
+<p>%H hour, in 24-hour clock (00-23)</p>
+<p>%a day of week, abbreviated (Mon-Sun)</p>
+<p>%A day of week, full (Monday-Sunday)</p>
+<p>%e day of month (1-31)</p>
+<p>%d day of month (01-31)</p>
+<p>%m month, numeric (01-12)</p>
+<p>%b month, abbreviated (Jan-Dec)</p>
+<p>%B month, full (January-December)</p>
+<p>%y year, without century (00-99)</p>
+<p>%Y year, with century (0000-9999)</p>
+<p>formate()を使うとDateからcharacterにデータの型を変更できます。</p>
+<pre class="r"><code>format(Sys.time(), &quot;%a %b %d %X %Y %Z&quot;) </code></pre>
+<pre><code>## [1] &quot;火 2 09 23:41:48 2021 JST&quot;</code></pre>
+<pre class="r"><code>format(Sys.time(), &quot;%Y-%b-%d-%a %H:%M:%S&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-2-09-火 23:41:48&quot;</code></pre>
+<p>自由自在ですね。</p>
+</div>
+<div id="手順②-lubridateymdを使う" class="section level2">
+<h2>手順②: lubridate::ymd()を使う</h2>
+<p>先に言っておきますけど、断然lubridateで処理した方が便利です。</p>
+<p>yとｍとｄの並びを変えるだけで、様々な形のデータに対応できるので、今後はlubridateを使っていこうと思います。</p>
+<pre class="r"><code>lubridate::ymd(&quot;2017/01/15&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-15&quot;</code></pre>
+<pre class="r"><code>lubridate::ydm(&quot;2017/15/Jan&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-15&quot;</code></pre>
+<pre class="r"><code>lubridate::dmy(&quot;15th-January-2017&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-15&quot;</code></pre>
+<p>全て完璧に認識されていますね。
+lubridate様様です。</p>
+<p>これで、Rに日付データとして認識させることができたので、今後の為に、時間を扱う関数たちをメモっておきたいと思います！</p>
+</div>
+<div id="時間を表示させる関数" class="section level2">
+<h2>時間を表示させる関数</h2>
+<pre class="r"><code>Sys.Date() # システム上の日付を表示させる</code></pre>
+<pre><code>## [1] &quot;2021-02-09&quot;</code></pre>
+<pre class="r"><code>Sys.time()　# システム上の時間を表示させる</code></pre>
+<pre><code>## [1] &quot;2021-02-09 23:41:48 JST&quot;</code></pre>
+<pre class="r"><code>today(tzone = &quot;Asia/Tokyo&quot;)　# 日付けを表示させる</code></pre>
+<pre><code>## [1] &quot;2021-02-09&quot;</code></pre>
+<pre class="r"><code>now(tzone = &quot;Asia/Tokyo&quot;)　# 現在時刻を表示させる</code></pre>
+<pre><code>## [1] &quot;2021-02-09 23:41:48 JST&quot;</code></pre>
+</div>
+<div id="時間切捨て切り上げ" class="section level2">
+<h2>時間切捨て&amp;切り上げ</h2>
+<pre class="r"><code>as_date(Sys.time()) # 時間を切捨てて、日付のみ表示</code></pre>
+<pre><code>## [1] &quot;2021-02-09&quot;</code></pre>
+<pre class="r"><code>as_datetime(Sys.time()) #??</code></pre>
+<pre><code>## [1] &quot;2021-02-09 14:41:48 UTC&quot;</code></pre>
+</div>
+<div id="posixct-posixlt問題" class="section level2">
+<h2>“POSIXct” &amp; “POSIXlt”問題</h2>
+<p>POSIX<strong>ct</strong>は、calendar timeを表していて、1970/01/01を0秒として現在時刻を表示しています。</p>
+<pre class="r"><code>ymd(&quot;1970/01/01&quot;) %&gt;% unclass()</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>ymd()で文字列を処理するとPOSIXct型になるらしいです。その為、classを取ると、1970/01/01は”０”として表示されます。</p>
+<pre class="r"><code>ymd(&quot;1980/01/01&quot;) %&gt;% unclass()</code></pre>
+<pre><code>## [1] 3652</code></pre>
+<p>10年後の1980/01/01は、365 * 10 + 2 で3652と表示されている。
+あれれ、どういうことこれ？</p>
+<pre class="r"><code>as.POSIXlt(&quot;1970/01/01&quot;, origin = &quot;1960-01-01&quot;) %&gt;% unclass()</code></pre>
+<pre><code>## $sec
+## [1] 0
+## 
+## $min
+## [1] 0
+## 
+## $hour
+## [1] 0
+## 
+## $mday
+## [1] 1
+## 
+## $mon
+## [1] 0
+## 
+## $year
+## [1] 70
+## 
+## $wday
+## [1] 4
+## 
+## $yday
+## [1] 0
+## 
+## $isdst
+## [1] 0
+## 
+## $zone
+## [1] &quot;JST&quot;
+## 
+## $gmtoff
+## [1] NA</code></pre>
+<p>ただし、これは０と表示されません。なぜ？？</p>
+<p>一方、POSIX<strong>lt</strong>の方は、人間が認知できる時間のまとまりで表現されています。（例：years, months, weeks, days）</p>
+<p>現在の時刻を表示させ、そのクラスを取り除いてあげると、POSIXltは、year, month, 等の集まりであることが分かりますが、なぜyearのところが12１となっているのかなど、分からないところがいくつかあります。</p>
+<pre class="r"><code>as.POSIXlt(now(), &quot;UTC&quot;) %&gt;% unclass()</code></pre>
+<pre><code>## $sec
+## [1] 48.40072
+## 
+## $min
+## [1] 41
+## 
+## $hour
+## [1] 14
+## 
+## $mday
+## [1] 9
+## 
+## $mon
+## [1] 1
+## 
+## $year
+## [1] 121
+## 
+## $wday
+## [1] 2
+## 
+## $yday
+## [1] 39
+## 
+## $isdst
+## [1] 0
+## 
+## attr(,&quot;tzone&quot;)
+## [1] &quot;UTC&quot;</code></pre>
+<p>余談ですが、Rでは、デフォルトのタイムゾーンがUTC（協定世界時）となっているので、時間の計算をするたびにタイムゾーンを設定しておく方が、ミスを未然に防げるらしいです。僕の手元のwindowsでは、なぜか毎回JSTとなっていますが、予期せぬミスを防ぐために、タイムゾーンを設定しようと思います。</p>
+</div>
+<div id="日付けの数列" class="section level2">
+<h2>日付けの数列</h2>
+<p>日付けの数列は簡単に作れます。</p>
+<pre class="r"><code>seq(as.Date(&quot;2021/01/01&quot;), as.Date(&quot;2021/02/01&quot;), by = &quot;week&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2021-01-08&quot; &quot;2021-01-15&quot; &quot;2021-01-22&quot; &quot;2021-01-29&quot;</code></pre>
+<pre class="r"><code>seq(as.Date(&quot;2021/01/01&quot;), as.Date(&quot;2021/04/01&quot;), by = &quot;2 weeks&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2021-01-15&quot; &quot;2021-01-29&quot; &quot;2021-02-12&quot; &quot;2021-02-26&quot;
+## [6] &quot;2021-03-12&quot; &quot;2021-03-26&quot;</code></pre>
+<pre class="r"><code>seq(as.Date(&quot;2021/01/01&quot;), as.Date(&quot;2021/05/01&quot;), by = &quot;month&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2021-02-01&quot; &quot;2021-03-01&quot; &quot;2021-04-01&quot; &quot;2021-05-01&quot;</code></pre>
+<pre class="r"><code>seq(as.Date(&quot;2021/01/01&quot;), as.Date(&quot;2021/10/01&quot;), by = &quot;2 months&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2021-03-01&quot; &quot;2021-05-01&quot; &quot;2021-07-01&quot; &quot;2021-09-01&quot;</code></pre>
+<pre class="r"><code>seq(as.Date(&quot;2021/01/01&quot;), as.Date(&quot;2022/02/01&quot;), by = &quot;year&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2022-01-01&quot;</code></pre>
+<pre class="r"><code>seq(as.Date(&quot;2021/01/01&quot;), as.Date(&quot;2025/02/01&quot;), by = &quot;2 years&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2023-01-01&quot; &quot;2025-01-01&quot;</code></pre>
+<p>lubridate::ymd()を使っても日付けの数列を作ることができます。</p>
+<pre class="r"><code>seq(ymd(&quot;2021/01/01&quot;), ymd(&quot;2021/01/15&quot;), by = &quot;3 days&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-01-01&quot; &quot;2021-01-04&quot; &quot;2021-01-07&quot; &quot;2021-01-10&quot; &quot;2021-01-13&quot;</code></pre>
+</div>
+<div id="日付けデータの抽出と結合" class="section level2">
+<h2>日付けデータの抽出と結合</h2>
+<p>パッケージ <code>lubridate</code>を使えば簡単にできます。</p>
+<pre class="r"><code>x &lt;- now(tzone = &quot;Asia/Tokyo&quot;) # 東京の現在時刻を表示
+year(x) # yearを抽出</code></pre>
+<pre><code>## [1] 2021</code></pre>
+<pre class="r"><code>month(x) # monthを抽出</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>day(x) # dayを抽出</code></pre>
+<pre><code>## [1] 9</code></pre>
+<pre class="r"><code>hour(x) # hourを抽出</code></pre>
+<pre><code>## [1] 23</code></pre>
+<pre class="r"><code>minute(x) # minuteを抽出</code></pre>
+<pre><code>## [1] 41</code></pre>
+<pre class="r"><code>second(x) # secondを抽出</code></pre>
+<pre><code>## [1] 48.53575</code></pre>
+<p>逆にばらばらの日付&amp;時刻データは<code>make_date</code>or<code>make_datetime</code>を使えば簡単に結合できます。</p>
+<pre class="r"><code>make_date(year = 2021, month = 2, day = 14)</code></pre>
+<pre><code>## [1] &quot;2021-02-14&quot;</code></pre>
+<pre class="r"><code>make_datetime(year = 2021, month = 2, day = 14, hour = 23, min = 12, sec = 23, tz = &quot;Asia/Tokyo&quot;)</code></pre>
+<pre><code>## [1] &quot;2021-02-14 23:12:23 JST&quot;</code></pre>
+</div>
+<div id="ある一定期間の日数を調べたい" class="section level2">
+<h2>ある一定期間の日数を調べたい</h2>
+<pre class="r"><code>yday(ymd(&quot;2021/12/31&quot;)) #ある年の経過日数</code></pre>
+<pre><code>## [1] 365</code></pre>
+<pre class="r"><code>mday(ymd(&quot;2021/12/31&quot;)) # ある月の経過日数</code></pre>
+<pre><code>## [1] 31</code></pre>
+<pre class="r"><code>wday(ymd(&quot;2021/12/31&quot;), label = TRUE, abbr = TRUE) # ある週の経過日数（or曜日）</code></pre>
+<pre><code>## [1] 金
+## Levels: 日 &lt; 月 &lt; 火 &lt; 水 &lt; 木 &lt; 金 &lt; 土</code></pre>
+</div>
+<div id="日付計算" class="section level2">
+<h2>日付計算</h2>
+<p>baseRでは、以下のように計算できます。</p>
+<pre class="r"><code>difftime(ymd(&quot;2021/4/3&quot;), ymd(&quot;2021/2/4&quot;), units = &quot;auto&quot;)</code></pre>
+<pre><code>## Time difference of 58 days</code></pre>
+<p><code>difftime(A, B)</code>と書くと、B - Aと計算されてしまうので、大小関係に注意しましょう。</p>
+<p><code>map</code>を使えば、複数の単位で一度に出力させることもできます。</p>
+<pre class="r"><code>map(.x = c(&quot;auto&quot;, &quot;secs&quot;, &quot;mins&quot;, &quot;hours&quot;, &quot;days&quot;, &quot;weeks&quot;),
+    .f = ~{difftime(ymd(&quot;2021/4/3&quot;), ymd(&quot;2021/2/4&quot;), units = .x)})</code></pre>
+<pre><code>## [[1]]
+## Time difference of 58 days
+## 
+## [[2]]
+## Time difference of 5011200 secs
+## 
+## [[3]]
+## Time difference of 83520 mins
+## 
+## [[4]]
+## Time difference of 1392 hours
+## 
+## [[5]]
+## Time difference of 58 days
+## 
+## [[6]]
+## Time difference of 8.285714 weeks</code></pre>
+</div>
+<div id="期間durationを表示させる" class="section level2">
+<h2>期間（duration）を表示させる</h2>
+<p>以下の関数を使えば、ある期間を秒数で表示させることができます。</p>
+<p>例えば、一日が何秒か知りたくなったら、ddays()で表示させることをお勧めします。</p>
+<pre class="r"><code>dseconds(15)</code></pre>
+<pre><code>## [1] &quot;15s&quot;</code></pre>
+<pre class="r"><code>dminutes(60)</code></pre>
+<pre><code>## [1] &quot;3600s (~1 hours)&quot;</code></pre>
+<pre class="r"><code>dhours(24)</code></pre>
+<pre><code>## [1] &quot;86400s (~1 days)&quot;</code></pre>
+<pre class="r"><code>ddays(1)</code></pre>
+<pre><code>## [1] &quot;86400s (~1 days)&quot;</code></pre>
+<pre class="r"><code>dmonths(3)</code></pre>
+<pre><code>## [1] &quot;7889400s (~13.04 weeks)&quot;</code></pre>
+<pre class="r"><code>dyears(3)</code></pre>
+<pre><code>## [1] &quot;94672800s (~3 years)&quot;</code></pre>
+</div>
+<div id="最後に" class="section level2">
+<h2>最後に、、、</h2>
+<p>やはり、時間関係のコードは難しいですね。</p>
+<p>POSIXltとPOSIXctについては別の機会を設けようと思います。</p>
+<p>また、データの型に対する知識が欠けていると感じていたので、今後フォローアップしていきたいです。</p>
+<p>今日も最後まで読んでいただきありがとうございます！</p>
+<p>Adios!!</p>
+</div>
+<div id="参考文献" class="section level2">
+<h2>参考文献</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/10699511/difference-between-as-posixct-as-posixlt-and-strptime-for-converting-character-v">Difference between as.POSIXct/as.POSIXlt and strptime for converting character vectors to POSIXct/POSIXlt</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/UNIX%E6%99%82%E9%96%93">UNIX時間</a></li>
+<li><a href="https://r4ds.had.co.nz/dates-and-times.html">R for Data Science</a></li>
+<li><a href="https://www.fhs.swiss/jpn/gmt-utc-tai.html#:~:text=%E5%9B%BD%E9%9A%9B%E5%8D%94%E5%AE%9A%E3%81%AB%E3%82%88%E3%82%8A%E3%80%81UTC%E3%81%AF,%E3%81%AF32%E7%A7%92%E3%81%AE%E3%81%BF%E3%81%A7%E3%81%99%E3%80%82">UTC</a></li>
+<li><a href="http://www.okadajp.org/RWiki/?%E6%97%A5%E4%BB%98%E3%80%81%E6%99%82%E9%96%93%E9%96%A2%E6%95%B0Tips%E5%A4%A7%E5%85%A8">日付・時間関数Tips大全</a></li>
+</ul>
+</div>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/lubridate/" rel="tag">lubridate</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name"></span>
+	</div>
+	<div class="authorbox__description">
+		Rikiya Honda&rsquo;s true identity is friendly, eager to improve, and open to every constructive comments. Maybe he is a successful blogger or writer. Who knows?
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/colour-visualilsation/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">色の調整</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/website-restart/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">ウェブサイト更新再開！</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2021 Rikiya Honda.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
