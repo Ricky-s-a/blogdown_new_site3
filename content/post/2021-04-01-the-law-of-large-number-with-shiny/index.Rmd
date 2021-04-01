@@ -27,8 +27,8 @@ Sys.setenv(lang = "en")
 大数の法則とshinyについては、詳しくは以下のサイトを参考にしてみてください！
 
 
-*[大数の法則（Wiki）](https://ja.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E3%81%AE%E6%B3%95%E5%89%87)
-*[shiny](https://www.randpy.tokyo/entry/shiny_5)
+* [大数の法則（Wiki）](https://ja.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E3%81%AE%E6%B3%95%E5%89%87)
+* [shiny](https://www.randpy.tokyo/entry/shiny_5)
 
 ### 動作環境
 ```{r}
@@ -127,4 +127,4 @@ shinyApp(ui, server)
 Adios！！
 
 ### 参考文献
-*[Mastering Shiny](https://mastering-shiny.org/)
+* [Mastering Shiny](https://mastering-shiny.org/)
