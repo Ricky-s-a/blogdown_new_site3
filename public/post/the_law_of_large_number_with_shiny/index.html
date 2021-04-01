@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>大数の法則 with Shiny - Rikiya&#39;s blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="大数の法則 with Shiny" />
+<meta property="og:description" content="こんにちは！ 投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑） 大数の法則と" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/the_law_of_large_number_with_shiny/" />
+<meta property="article:published_time" content="2021-04-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-04-01T00:00:00+00:00" />
+
+		<meta itemprop="name" content="大数の法則 with Shiny">
+<meta itemprop="description" content="こんにちは！ 投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑） 大数の法則と">
+<meta itemprop="datePublished" content="2021-04-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-04-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1114">
+
+
+
+<meta itemprop="keywords" content="shiny," />
+
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="大数の法則 with Shiny"/>
+<meta name="twitter:description" content="こんにちは！ 投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑） 大数の法則と"/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo">
+		<a class="logo__link" href="/" title="A piece of cake" rel="home">
+			<div class="logo__item logo__text">
+					<div class="logo__title">A piece of cake</div>
+					<div class="logo__tagline">But cake is always sweet</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">大数の法則 with Shiny</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Rikiay Honda</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-04-01T00:00:00Z">2021-04-01</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/note/" rel="category">note</a>
+	</span>
+</div></div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		
+	</div>
+</div>
+<div class="content post__content clearfix">
+			
+
+
+<p>こんにちは！</p>
+<p>投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑）</p>
+<p>大数の法則とshinyについては、詳しくは以下のサイトを参考にしてみてください！</p>
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E3%81%AE%E6%B3%95%E5%89%87">大数の法則（Wiki）</a></li>
+<li><a href="https://www.randpy.tokyo/entry/shiny_5">shiny</a></li>
+</ul>
+<div id="動作環境" class="section level3">
+<h3>動作環境</h3>
+<pre class="r"><code>version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          4                           
+## minor          0.3                         
+## year           2020                        
+## month          10                          
+## day            10                          
+## svn rev        79318                       
+## language       R                           
+## version.string R version 4.0.3 (2020-10-10)
+## nickname       Bunny-Wunnies Freak Out</code></pre>
+</div>
+<div id="パッケージの準備" class="section level3">
+<h3>パッケージの準備</h3>
+<pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;, &quot;shiny&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
+</div>
+<div id="大数の法則を簡単に説明すると" class="section level3">
+<h3>大数の法則を簡単に説明すると？</h3>
+<p>まず、時間がない方の為に簡単に説明すると、大数の法則は、「試行回数を増やすと期待値に近づく」というものです。</p>
+<p>例えば、サイコロの出た目の期待値は、3.5ですが、必ずしも毎回出た目の平均が3.5になるわけではありませんよね？ですが、試行回数を増やすと出た目の平均は、3.5に近づきます。</p>
+<p>これをRコードので直観的に説明すると、こうなります。</p>
+<pre class="r"><code># サイコロを10回ふった時の値
+sample(1:6, size = 10, replace = TRUE) </code></pre>
+<pre><code>##  [1] 4 4 3 6 2 1 3 2 6 4</code></pre>
+<pre class="r"><code># サイコロを10回ふった時の値の平均を10回試行
+dice_10 &lt;- replicate(10, mean(sample(1:6, size = 10, replace = TRUE)))
+
+# サイコロを10回ふった時の値を可視化
+hist(dice_10)</code></pre>
+<p><img src="/post/the_law_of_large_number_with_shiny/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code># サイコロを10回ふった時の値の平均を1000回試行
+dice_1000 &lt;- replicate(1000, mean(sample(1:6, size = 10, replace = TRUE)))
+
+# サイコロを1000回ふった時の値を可視化
+hist(dice_1000)</code></pre>
+<p><img src="/post/the_law_of_large_number_with_shiny/index_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p>徐々に平均値（期待値）である3.5の回数が増えているのが分かりますね！これが、大数の法則の簡単な説明になります。</p>
+</div>
+<div id="shinyを使って実装" class="section level3">
+<h3>shinyを使って実装</h3>
+<p>今見てきた大数の法則をwebアプリを作ることが出来るshinyでコードを書いてみます。</p>
+<p>ローカルのRstudioでは動作を確認できたのですが、このウェブサイトの環境では動くかどうか怪しいので、動かなかったら申しわけないです！！</p>
+</div>
+<div id="コード" class="section level3">
+<h3>コード</h3>
+<pre class="r"><code>ui  &lt;- fluidPage(
+  textOutput(&quot;text&quot;),
+  sliderInput(&quot;n&quot;, label = &quot;Number&quot;, value = 1e3, min = 0, max = 1e4),
+  sliderInput(&quot;bins&quot;, label = &quot;the number of bins in a histogram&quot;, value = 30, min = 10, max = 50),
+  plotOutput(&quot;code&quot;)
+)
+
+server &lt;- function(input, output, session) {
+  output$text &lt;- renderText({
+    &quot;Hello friend. This is Rikiya. This site is generated on R programming laugague.&quot;
+  })
+  random &lt;- reactive({
+    rnorm(n = input$n, mean = 0, sd = 1)
+    })
+  df &lt;- reactive({
+    data.frame(id = seq_along(random()), x = random())
+  })
+  output$code &lt;- renderPlot({
+    ggplot2::ggplot(df(), aes(x)) +
+      geom_histogram(bins = input$bins) +
+      scale_x_continuous(expand = c(0, 0)) +
+      scale_y_continuous(expand = c(0, 0)) +  
+      coord_cartesian(xlim = c(-4, 4), ylim = c(0, 1200)) +
+      theme_bw()
+  })
+}
+
+shinyApp(ui, server)</code></pre>
+<p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div></p>
+</div>
+<div id="最後に" class="section level3">
+<h3>最後に、、、</h3>
+<p>やっぱり、表示されませんでしたね。。。</p>
+<p><a href="https://rikiya12honda.shinyapps.io/ch_5/">このURL</a>の方にアップロードしておいたので、動作に興味のある方は確認してみてください！</p>
+<p>※追記：これもだめですね。なにか対策考えます！</p>
+<p>感想としては、shinyは、関数型プログラミングというよりも、命令型プログラミングというらしいのですが、普段使っているR言語とは感覚が違いますね。</p>
+<p>ファイナンス系の本でshinyでの財務分析を勉強してみる予定なので、それが済んで且つshinyを深く学びたいと想ったら、Mastering Shinyを読み進めてみようと思います。</p>
+<p>最後まで読んでいただきありがとうございました！</p>
+<p>Adios！！</p>
+</div>
+<div id="参考文献" class="section level3">
+<h3>参考文献</h3>
+<ul>
+<li><a href="https://mastering-shiny.org/">Mastering Shiny</a></li>
+</ul>
+</div>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/shiny/" rel="tag">shiny</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name"></span>
+	</div>
+	<div class="authorbox__description">
+		Rikiya Honda&rsquo;s true identity is friendly, eager to improve, and open to every constructive comments. Maybe he is a successful blogger or writer. Who knows?
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/website-restart/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">ウェブサイト更新再開！</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/2021-04-01-%E6%9C%80%E8%BF%91%E4%BE%BF%E5%88%A9%E3%81%A0%E3%81%A8%E6%80%9D%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B%E9%96%A2%E6%95%B0%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9-%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Index</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2021 Rikiya Honda.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

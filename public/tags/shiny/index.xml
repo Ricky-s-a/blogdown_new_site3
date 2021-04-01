@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shiny on Rikiya&#39;s blog</title>
+    <link>/tags/shiny/</link>
+    <description>Recent content in shiny on Rikiya&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>大数の法則 with Shiny</title>
+      <link>/post/the_law_of_large_number_with_shiny/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/the_law_of_large_number_with_shiny/</guid>
+      <description>こんにちは！ 投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑） 大数の法則と</description>
+    </item>
+    
+  </channel>
+</rss>
