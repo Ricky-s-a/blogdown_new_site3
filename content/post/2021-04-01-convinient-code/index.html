@@ -11,4 +11,172 @@ thumbnail: ''
 
 
 
+<p>今回は、便利だなと思うコード集を集めてみました。</p>
+<p>では、早速見ていきましょう！</p>
+<div id="動作環境" class="section level3">
+<h3>動作環境</h3>
+<pre class="r"><code>version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          4                           
+## minor          0.3                         
+## year           2020                        
+## month          10                          
+## day            10                          
+## svn rev        79318                       
+## language       R                           
+## version.string R version 4.0.3 (2020-10-10)
+## nickname       Bunny-Wunnies Freak Out</code></pre>
+</div>
+<div id="パッケージの準備" class="section level3">
+<h3>パッケージの準備</h3>
+<p>data wanglingで必要となる一般的なパッケージを準備しておきます。</p>
+<pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;, &quot;lubridate&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
+</div>
+<div id="ggextraggmarginal" class="section level3">
+<h3>ggExtra::ggMarginal</h3>
+<p>これは、散布図と分布図を同時にプロットできる関数です。</p>
+<p>ggplotと共にに使います。</p>
+<p>データは、<a href="https://www.amazon.co.jp/R%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A8%BC%E5%88%86%E6%9E%90-%E2%80%95%E5%9B%9E%E5%B8%B0%E5%88%86%E6%9E%90%E3%81%8B%E3%82%89%E5%9B%A0%E6%9E%9C%E5%88%86%E6%9E%90%E3%81%B8%E2%80%95-%E6%98%9F%E9%87%8E%E5%8C%A1%E9%83%8E/dp/427421947X">Rによる実証分析　回帰分析から因果分析へ</a>を基に作成しています。</p>
+<pre class="r"><code>path &lt;- &quot;~/R/learn_R/Rによる実証分析　回帰分析から因果分析へ/Data/02 演習用データ集/&quot;
+(df &lt;- read_csv(paste0(path, &quot;data_4_1.csv&quot;)) %&gt;% 
+    mutate(
+      date = lubridate::ymd(date)
+    ))</code></pre>
+<pre><code>## # A tibble: 744 x 5
+##    date        time  elec  prec  temp
+##    &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 2014-08-01     0  3193     0  27.9
+##  2 2014-08-01     1  2960     0  27.9
+##  3 2014-08-01     2  2807     0  27.1
+##  4 2014-08-01     3  2748     0  26.8
+##  5 2014-08-01     4  2735     0  26.9
+##  6 2014-08-01     5  2736     0  27.3
+##  7 2014-08-01     6  2950     0  28.3
+##  8 2014-08-01     7  3336     0  29.4
+##  9 2014-08-01     8  3863     0  30.2
+## 10 2014-08-01     9  4328     0  32.2
+## # ... with 734 more rows</code></pre>
+<pre class="r"><code>df &lt;- df %&gt;% 
+  mutate(
+    daytime = (time &gt;= 9 &amp; time &lt;= 18),
+    wday = wday(date, label = TRUE, local = &quot;English&quot;),
+    sunday = (wday == &quot;Sun&quot;), # sundayダミーを追加
+    recess = (date %in% seq(ymd(&quot;2014-08-11&quot;), ymd(&quot;2014-08-16&quot;), by = &quot;day&quot;))
+  )
+df</code></pre>
+<pre><code>## # A tibble: 744 x 9
+##    date        time  elec  prec  temp daytime wday  sunday recess
+##    &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;ord&gt; &lt;lgl&gt;  &lt;lgl&gt; 
+##  1 2014-08-01     0  3193     0  27.9 FALSE   Fri   FALSE  FALSE 
+##  2 2014-08-01     1  2960     0  27.9 FALSE   Fri   FALSE  FALSE 
+##  3 2014-08-01     2  2807     0  27.1 FALSE   Fri   FALSE  FALSE 
+##  4 2014-08-01     3  2748     0  26.8 FALSE   Fri   FALSE  FALSE 
+##  5 2014-08-01     4  2735     0  26.9 FALSE   Fri   FALSE  FALSE 
+##  6 2014-08-01     5  2736     0  27.3 FALSE   Fri   FALSE  FALSE 
+##  7 2014-08-01     6  2950     0  28.3 FALSE   Fri   FALSE  FALSE 
+##  8 2014-08-01     7  3336     0  29.4 FALSE   Fri   FALSE  FALSE 
+##  9 2014-08-01     8  3863     0  30.2 FALSE   Fri   FALSE  FALSE 
+## 10 2014-08-01     9  4328     0  32.2 TRUE    Fri   FALSE  FALSE 
+## # ... with 734 more rows</code></pre>
+<pre class="r"><code>(mod3 &lt;- lm(elec ~ temp + daytime + prec + sunday + recess, data = df))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = elec ~ temp + daytime + prec + sunday + recess, 
+##     data = df)
+## 
+## Coefficients:
+## (Intercept)         temp  daytimeTRUE         prec   sundayTRUE   recessTRUE  
+##      179.07       113.48       563.53        14.27      -448.39      -438.23</code></pre>
+<pre class="r"><code>library(modelr)
+df1 &lt;- df %&gt;% 
+  add_residuals(mod3)
 
+g &lt;- ggplot(df1, aes(date, resid)) +
+  geom_ref_line(h = 0) +
+  geom_point(alpha = 0.25)
+
+library(ggExtra)
+ggExtra::ggMarginal(
+  g,
+  type = &quot;density&quot;,
+  margins = &quot;y&quot;,
+  size = 5
+)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/ggExtra-1.png" width="672" /></p>
+</div>
+<div id="無名関数" class="section level3">
+<h3>無名関数</h3>
+<p>R言語での無名関数は、命名していない関数のことです。</p>
+<p>こんな感じで使います。</p>
+<p>データは先ほどロードした<code>df</code>から再利用してます。</p>
+<p>一度に複数の関数を計算させることができるので便利ですね。</p>
+<pre class="r"><code>funs &lt;- list(sum = sum,
+             mean = mean,
+             median = median) # データはlist型でないといけない
+
+lapply(funs, function(f) f(df$prec)) # 降水量の合計、平均、中央値を表示</code></pre>
+<pre><code>## $sum
+## [1] 105
+## 
+## $mean
+## [1] 0.141129
+## 
+## $median
+## [1] 0</code></pre>
+</div>
+<div id="赤池情報量基準" class="section level3">
+<h3>赤池情報量基準</h3>
+<p>step{stats}という関数なのですが、赤池情報量基準(Akaike’s Information Criterion: AIC)を計算する関数になります。</p>
+<p>AICは、値が小さいほど良いモデルとされているそうです。</p>
+<p>使い方は、多変量解析をする際に、変数が増えてしまうと増加してしまう決定係数（R-squared)の値を、変数選択によって小さくするために使います。</p>
+<p>このケースを使うと、最下部に表示されている<code>elec ~ temp + daytime + sunday + recess</code>が多変量解析する際の良いモデルということになります。</p>
+<pre class="r"><code>(mod3 &lt;- lm(elec ~ temp + daytime + prec + sunday + recess, data = df))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = elec ~ temp + daytime + prec + sunday + recess, 
+##     data = df)
+## 
+## Coefficients:
+## (Intercept)         temp  daytimeTRUE         prec   sundayTRUE   recessTRUE  
+##      179.07       113.48       563.53        14.27      -448.39      -438.23</code></pre>
+<pre class="r"><code>stmod3 &lt;- step(mod3)</code></pre>
+<pre><code>## Start:  AIC=8806.38
+## elec ~ temp + daytime + prec + sunday + recess
+## 
+##           Df Sum of Sq       RSS    AIC
+## - prec     1    129275 101312700 8805.3
+## &lt;none&gt;                 101183425 8806.4
+## - sunday   1  18965310 120148735 8932.2
+## - recess   1  21252300 122435724 8946.2
+## - daytime  1  49305718 150489142 9099.7
+## - temp     1 100441924 201625349 9317.4
+## 
+## Step:  AIC=8805.33
+## elec ~ temp + daytime + sunday + recess
+## 
+##           Df Sum of Sq       RSS    AIC
+## &lt;none&gt;                 101312700 8805.3
+## - sunday   1  18840602 120153302 8930.2
+## - recess   1  21180925 122493625 8944.6
+## - daytime  1  50322970 151635670 9103.4
+## - temp     1 102307200 203619900 9322.7</code></pre>
+</div>
+<div id="最後に" class="section level3">
+<h3>最後に、、、</h3>
+<p>今回は、自分へのメモとして駆け足で書いてしまいました。</p>
+<p>最後のまで読んでいただきありがとうございます！！</p>
+<p>Adios!!</p>
+</div>
+<div id="参考文献" class="section level3">
+<h3>参考文献</h3>
+<ul>
+<li><a href="https://www.amazon.co.jp/R%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A8%BC%E5%88%86%E6%9E%90-%E2%80%95%E5%9B%9E%E5%B8%B0%E5%88%86%E6%9E%90%E3%81%8B%E3%82%89%E5%9B%A0%E6%9E%9C%E5%88%86%E6%9E%90%E3%81%B8%E2%80%95-%E6%98%9F%E9%87%8E%E5%8C%A1%E9%83%8E/dp/427421947X">Rによる実証分析　回帰分析から因果分析へ</a></li>
+<li><a href="https://bookwalker.jp/def7157cac-00c4-41c0-bd8a-68e40f759f0c/?adpcnt=7qM_Vsc7&amp;utm_source=google&amp;utm_medium=cpc&amp;utm_term=_&amp;utm_campaign=&amp;utm_content=__cp_1471997507_gr_65566109508_kw_pla-428567606763_cr_281840075652&amp;gclid=EAIaIQobChMIhr-JmZTd7wIVgmkqCh2w9AyWEAQYAiABEgI09vD_BwE">Rによる計量経済学（第2版）</a></li>
+</ul>
+</div>

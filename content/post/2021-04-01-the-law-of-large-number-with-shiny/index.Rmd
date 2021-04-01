@@ -124,7 +124,7 @@ shinyApp(ui, server)
 
 最後まで読んでいただきありがとうございました！
 
-Adios！！
+Adios!!
 
 ### 参考文献
 * [Mastering Shiny](https://mastering-shiny.org/)
