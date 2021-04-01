@@ -1,0 +1,130 @@
+---
+title: 大数の法則 with Shiny
+author: Rikiya Honda
+date: '2021-04-01'
+slug: the_law_of_large_number_with_shiny
+categories:
+  - note
+tags:
+  - shiny
+description: ''
+thumbnail: ''
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+Sys.setenv(lang = "en")
+```
+
+こんにちは！
+
+投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑）
+
+大数の法則とshinyについては、詳しくは以下のサイトを参考にしてみてください！
+
+
+*[大数の法則（Wiki）](https://ja.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E3%81%AE%E6%B3%95%E5%89%87)
+*[shiny](https://www.randpy.tokyo/entry/shiny_5)
+
+### 動作環境
+```{r}
+version
+```
+### パッケージの準備
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse", "shiny")
+lapply(Packages, library, character.only = TRUE)
+```
+
+### 大数の法則を簡単に説明すると？
+
+まず、時間がない方の為に簡単に説明すると、大数の法則は、「試行回数を増やすと期待値に近づく」というものです。
+
+例えば、サイコロの出た目の期待値は、3.5ですが、必ずしも毎回出た目の平均が3.5になるわけではありませんよね？ですが、試行回数を増やすと出た目の平均は、3.5に近づきます。
+
+これをRコードので直観的に説明すると、こうなります。
+
+```{r}
+# サイコロを10回ふった時の値
+sample(1:6, size = 10, replace = TRUE) 
+
+# サイコロを10回ふった時の値の平均を10回試行
+dice_10 <- replicate(10, mean(sample(1:6, size = 10, replace = TRUE)))
+
+# サイコロを10回ふった時の値を可視化
+hist(dice_10)
+
+# サイコロを10回ふった時の値の平均を1000回試行
+dice_1000 <- replicate(1000, mean(sample(1:6, size = 10, replace = TRUE)))
+
+# サイコロを1000回ふった時の値を可視化
+hist(dice_1000)
+```
+
+徐々に平均値（期待値）である3.5の回数が増えているのが分かりますね！これが、大数の法則の簡単な説明になります。
+
+### shinyを使って実装
+
+今見てきた大数の法則をwebアプリを作ることが出来るshinyでコードを書いてみます。
+
+ローカルのRstudioでは動作を確認できたのですが、このウェブサイトの環境では動くかどうか怪しいので、動かなかったら申しわけないです！！
+
+### コード
+
+
+```{r}
+
+ui  <- fluidPage(
+  textOutput("text"),
+  sliderInput("n", label = "Number", value = 1e3, min = 0, max = 1e4),
+  sliderInput("bins", label = "the number of bins in a histogram", value = 30, min = 10, max = 50),
+  plotOutput("code")
+)
+
+server <- function(input, output, session) {
+  output$text <- renderText({
+    "Hello friend. This is Rikiya. This site is generated on R programming laugague."
+  })
+  random <- reactive({
+    rnorm(n = input$n, mean = 0, sd = 1)
+    })
+  df <- reactive({
+    data.frame(id = seq_along(random()), x = random())
+  })
+  output$code <- renderPlot({
+    ggplot2::ggplot(df(), aes(x)) +
+      geom_histogram(bins = input$bins) +
+      scale_x_continuous(expand = c(0, 0)) +
+      scale_y_continuous(expand = c(0, 0)) +  
+      coord_cartesian(xlim = c(-4, 4), ylim = c(0, 1200)) +
+      theme_bw()
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
+### 最後に、、、
+
+やっぱり、表示されませんでしたね。。。
+
+[このURL](https://rikiya12honda.shinyapps.io/ch_5/)の方にアップロードしておいたので、動作に興味のある方は確認してみてください！
+
+※追記：これもだめですね。なにか対策考えます！
+
+感想としては、shinyは、関数型プログラミングというよりも、命令型プログラミングというらしいのですが、普段使っているR言語とは感覚が違いますね。
+
+ファイナンス系の本でshinyでの財務分析を勉強してみる予定なので、それが済んで且つshinyを深く学びたいと想ったら、Mastering Shinyを読み進めてみようと思います。
+
+最後まで読んでいただきありがとうございました！
+
+Adios！！
+
+### 参考文献
+*[Mastering Shiny](https://mastering-shiny.org/)

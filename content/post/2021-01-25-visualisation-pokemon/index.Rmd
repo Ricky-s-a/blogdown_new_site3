@@ -139,6 +139,7 @@ ggplot(pokemon, aes(Atk, Def, colour = Type_2)) +
 
 ```{r, message=FALSE}
 # Type_2 がNAのポケモンは何を示しているのか
+
 pokemon %>% 
   filter(is.na(Type_2)) %>% 
   ggplot(aes(Atk, Def, colour = Type_1)) +
@@ -148,8 +149,7 @@ pokemon %>%
     labs(title = "タイプ２にデータがなかったポケモンのプロット",
          subtitle = "タイプ１には所属し、攻撃力&防御力の分布が低い数値に集中している",
          labs(caption = "データ出典は記事下部記載"))
-  
-  
+
 ```
 
 属性が2つ存在するものと、1つだけのポケモンがいるようですね～
