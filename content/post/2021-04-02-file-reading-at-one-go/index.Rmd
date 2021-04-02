@@ -1,0 +1,70 @@
+---
+title: ファイル一括読み込み
+author: Rikiya Honda
+date: '2021-04-02'
+slug: file_reading_at_one_go
+categories:
+  - note
+tags: []
+description: ''
+thumbnail: ''
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+Sys.setenv(lang = "en")
+```
+
+こんにちは！
+
+データをいちいち読み込むのがめんどくさかったので、ファイルの中のデータを一括で読み込む方法をメモしておきます。
+
+### 動作環境
+```{r}
+version
+```
+
+### パッケージの準備
+
+今回使うのは、`tidyverse`のみです。
+
+まぁ、大した内容ではないので。
+
+以下がファイルを一括で読み込むコードになります。
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+library(tidyverse)
+```
+
+
+
+```{r}
+library(tidyverse)
+
+# pathを設定
+path <- "~/R/learn_R/Rによる実証分析　回帰分析から因果分析へ/Data/02 演習用データ集"
+
+# file pathを抽出
+csv_files <- list.files(path = path, pattern = ".csv", full.names = TRUE)
+
+dfs <- map(csv_files, .f = ~{read_csv(.x, locale = locale(encoding = "shift-jis"))}) # windownsで日本語を読み込むため
+
+# file nameを抽出
+dfs_names <- list.files(path = path, pattern = ".csv", full.names = FALSE) %>% 
+  str_remove(pattern = ".csv")
+
+## dfsにname attributesを付与
+names(dfs) <- dfs_names
+
+names(dfs)
+```
+
+### 最後に、、、
+
+今回は、メモ程度なのでここらへんで。
+
+Adios!!
+

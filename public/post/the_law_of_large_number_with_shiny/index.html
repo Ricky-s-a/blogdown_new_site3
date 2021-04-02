@@ -18,7 +18,7 @@
 <meta itemprop="description" content="こんにちは！ 投稿が久しぶりになってしまいましたが、今日は大数の法則をShinyで実装してみようと思います！（実装っていうのか笑） 大数の法則と">
 <meta itemprop="datePublished" content="2021-04-01T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-04-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1114">
+<meta itemprop="wordCount" content="1108">
 
 
 
@@ -140,7 +140,7 @@ lapply(Packages, library, character.only = TRUE)</code></pre>
 <p>これをRコードので直観的に説明すると、こうなります。</p>
 <pre class="r"><code># サイコロを10回ふった時の値
 sample(1:6, size = 10, replace = TRUE) </code></pre>
-<pre><code>##  [1] 4 4 3 6 2 1 3 2 6 4</code></pre>
+<pre><code>##  [1] 4 1 1 5 5 6 3 3 4 4</code></pre>
 <pre class="r"><code># サイコロを10回ふった時の値の平均を10回試行
 dice_10 &lt;- replicate(10, mean(sample(1:6, size = 10, replace = TRUE)))
 
@@ -200,7 +200,7 @@ shinyApp(ui, server)</code></pre>
 <p>感想としては、shinyは、関数型プログラミングというよりも、命令型プログラミングというらしいのですが、普段使っているR言語とは感覚が違いますね。</p>
 <p>ファイナンス系の本でshinyでの財務分析を勉強してみる予定なので、それが済んで且つshinyを深く学びたいと想ったら、Mastering Shinyを読み進めてみようと思います。</p>
 <p>最後まで読んでいただきありがとうございました！</p>
-<p>Adios！！</p>
+<p>Adios!!</p>
 </div>
 <div id="参考文献" class="section level3">
 <h3>参考文献</h3>
@@ -235,8 +235,14 @@ shinyApp(ui, server)</code></pre>
 
 <nav class="pager flex">
 	<div class="pager__item pager__item--prev">
-		<a class="pager__link" href="/post/convinient_code/" rel="prev">
+		<a class="pager__link" href="/post/website-restart/" rel="prev">
 			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">ウェブサイト更新再開！</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/convinient_code/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
 			<p class="pager__title">最近便利だと感じているコード集</p>
 		</a>
 	</div>
