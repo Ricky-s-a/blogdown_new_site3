@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/categories/</loc>
+    <lastmod>2021-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/note/</loc>
+    <lastmod>2021-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/</loc>
     <lastmod>2021-04-02T00:00:00+00:00</lastmod>
   </url>
@@ -13,18 +23,13 @@
   </url>
   
   <url>
-    <loc>/post/convinient_code/</loc>
+    <loc>/post/file_reading_at_one_go/</loc>
     <lastmod>2021-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2021-04-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/note/</loc>
-    <lastmod>2021-04-01T00:00:00+00:00</lastmod>
+    <loc>/post/convinient_code/</loc>
+    <lastmod>2021-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>

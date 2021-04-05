@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 02 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>ファイル一括読み込み</title>
+      <link>/post/file_reading_at_one_go/</link>
+      <pubDate>Fri, 02 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/file_reading_at_one_go/</guid>
+      <description>こんにちは！ データをいちいち読み込むのがめんどくさかったので、ファイルの中のデータを一括で読み込む方法をメモしておきます。 動作環境 version ## _ ## platform</description>
+    </item>
+    
+    <item>
       <title>最近便利だと感じているコード集</title>
       <link>/post/convinient_code/</link>
       <pubDate>Fri, 02 Apr 2021 00:00:00 +0000</pubDate>

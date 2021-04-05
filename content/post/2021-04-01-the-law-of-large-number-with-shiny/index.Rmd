@@ -9,6 +9,7 @@ tags:
   - shiny
 description: ''
 thumbnail: ''
+runtime: shiny
 ---
 
 
