@@ -82,7 +82,7 @@ styles = lapply(1:12, function(n) {
 names(styles) = nodes$ID
 rp <- list(nodes = nodes, edges = edges, styles = styles)
 class(rp) <- c(class(rp), "riverplot")
-plot(rp, plot_area = 0.95, gravity = "top")
+plot(rp, plot_area = 0.95, str = 0, gravity = "top")
 ```
 
 ### 最後に、、、
