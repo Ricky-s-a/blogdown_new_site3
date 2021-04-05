@@ -13,6 +13,12 @@ thumbnail: ''
 
 
 
+<div id="sanky-diagramとは" class="section level3">
+<h3>Sanky Diagramとは？</h3>
+<p>Sanky Diagramとは、<a href="https://en.wikipedia.org/wiki/Sankey_diagram">こんなやつ</a>です。(相変わらず、、画像のアップロードが分からないww)</p>
+<p>川の流れになっている部分が、その変化の割合に比例しているグラフです。</p>
+<p>といっても、百聞は一見にしかずなので、コードを見ていきましょう！</p>
+</div>
 <div id="動作環境" class="section level3">
 <h3>動作環境</h3>
 <pre class="r"><code>version</code></pre>
@@ -37,12 +43,6 @@ thumbnail: ''
 <p>data wanglingで必要となる一般的なパッケージ<code>tidyverse</code>とSanky Diagramで必要な<code>riverplot</code>を準備します。</p>
 <pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;, &quot;riverplot&quot;)
 lapply(Packages, library, character.only = TRUE)</code></pre>
-</div>
-<div id="sanky-diagramとは" class="section level3">
-<h3>Sanky Diagramとは？</h3>
-<p>Sanky Diagramとは、<a href="https://en.wikipedia.org/wiki/Sankey_diagram">こんなやつ</a>です。(相変わらず、、画像のアップロードが分からないww)</p>
-<p>川の流れになっている部分が、その変化の割合に比例しているグラフです。</p>
-<p>といっても、百聞は一見にしかずなので、コードを見ていきましょう！</p>
 </div>
 <div id="コード" class="section level3">
 <h3>コード</h3>

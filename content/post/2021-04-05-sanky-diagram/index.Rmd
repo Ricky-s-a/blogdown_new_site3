@@ -10,7 +10,13 @@ tags:
 description: ''
 thumbnail: ''
 ---
+### Sanky Diagramとは？
 
+Sanky Diagramとは、[こんなやつ](https://en.wikipedia.org/wiki/Sankey_diagram)です。(相変わらず、、画像のアップロードが分からないww)
+
+川の流れになっている部分が、その変化の割合に比例しているグラフです。
+
+といっても、百聞は一見にしかずなので、コードを見ていきましょう！
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE,
@@ -35,13 +41,7 @@ lapply(Packages, library, character.only = TRUE)
 ```
 
 
-### Sanky Diagramとは？
 
-Sanky Diagramとは、[こんなやつ](https://en.wikipedia.org/wiki/Sankey_diagram)です。(相変わらず、、画像のアップロードが分からないww)
-
-川の流れになっている部分が、その変化の割合に比例しているグラフです。
-
-といっても、百聞は一見にしかずなので、コードを見ていきましょう！
 
 ### コード
 ```{r}
