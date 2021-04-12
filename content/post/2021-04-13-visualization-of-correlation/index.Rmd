@@ -82,7 +82,6 @@ heatmap(mcor, symm = TRUE)
 Adios!!
 
 
-
 ### references
 
-* (http://www.sthda.com/english/wiki/correlation-analyses-in-r)
+* http://www.sthda.com/english/wiki/correlation-analyses-in-r
