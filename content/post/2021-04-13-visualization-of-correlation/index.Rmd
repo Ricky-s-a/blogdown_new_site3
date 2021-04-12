@@ -1,14 +1,14 @@
 ---
-title: 相関関係を図示する
+title: 相関関係の図示化
 author: Rikiya Honda
 date: '2021-04-13'
-slug: visualization-of-correlation
-categories: []
+slug: visualization_of_correlation
+categories:
+  - blog
 tags: []
 description: ''
 thumbnail: ''
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE,
@@ -79,8 +79,7 @@ heatmap(mcor, symm = TRUE)
 
 簡単にかけますね。
 
-Adios!!
-
+Ａdios!!
 
 ### references
 
