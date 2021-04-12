@@ -1,0 +1,84 @@
+---
+title: 相関関係を図示する
+author: Rikiya Honda
+date: '2021-04-13'
+slug: visualization of correlation
+categories: []
+tags: []
+description: ''
+thumbnail: ''
+---
+
+
+
+<p>相関関係を図示化する必要があったので、メモとして書いておきます。</p>
+<div id="動作環境" class="section level3">
+<h3>動作環境</h3>
+<pre class="r"><code>version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          4                           
+## minor          0.3                         
+## year           2020                        
+## month          10                          
+## day            10                          
+## svn rev        79318                       
+## language       R                           
+## version.string R version 4.0.3 (2020-10-10)
+## nickname       Bunny-Wunnies Freak Out</code></pre>
+</div>
+<div id="パッケージの準備" class="section level3">
+<h3>パッケージの準備</h3>
+<p><code>tidyverse</code>を準備します。</p>
+<pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;, &quot;corrplot&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
+</div>
+<div id="準備" class="section level3">
+<h3>準備</h3>
+<pre class="r"><code># sデータフレームを準備
+df &lt;- mtcars
+
+# 相関関係を求める
+mcor &lt;- cor(df) %&gt;% 
+  round(digits = 2) %&gt;%
+  abs() # 多重共線性に対応するため</code></pre>
+</div>
+<div id="corrplot" class="section level3">
+<h3><code>corrplot</code></h3>
+<pre class="r"><code>library(corrplot)
+corrplot::corrplot(mcor, 
+                   type = &quot;lower&quot;, # 下半分を表示
+                   method = &quot;shade&quot;, # 四角いパネルで表示
+                   shade.col = NA, # パネルに政府を示す斜線を加えない
+                   tl.col = &quot;black&quot;, # textlabelの色を変える
+                   tl.srt = 45, # 上部テキストラベルの角度を変更
+                   addCoef.col = &quot;black&quot;, # 相関係数を黒で表示
+                   cl.pos = &quot;n&quot;, # 凡例を表示させない
+                   order = &quot;AOE&quot;) # &quot;hclust&quot;, &quot;AOE&quot;, &quot;FPC&quot;</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="ggpairs" class="section level3">
+<h3><code>GGpairs</code></h3>
+<p>これは、すごく簡単に使えます。</p>
+<pre class="r"><code>library(GGally)
+ggpairs(df)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>### <code>heatmap</code></p>
+<pre class="r"><code>heatmap(mcor, symm = TRUE)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="最後に" class="section level3">
+<h3>最後に、、、</h3>
+<p>簡単にかけますね。</p>
+<p>Ａdios!!</p>
+</div>
+<div id="references" class="section level3">
+<h3>references</h3>
+<ul>
+<li>(<a href="http://www.sthda.com/english/wiki/correlation-analyses-in-r" class="uri">http://www.sthda.com/english/wiki/correlation-analyses-in-r</a>)</li>
+</ul>
+</div>
