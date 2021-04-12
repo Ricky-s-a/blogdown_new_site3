@@ -28,8 +28,59 @@ version
 
 ### パッケージの準備
 
+`tidyverse`を準備します。
 
 ```{r, echo=TRUE, results='hide', message=FALSE}
 Packages <- c("tidyverse", "corrplot")
 lapply(Packages, library, character.only = TRUE)
 ```
+
+### 準備
+
+```{r}
+# sデータフレームを準備
+df <- mtcars
+
+# 相関関係を求める
+mcor <- cor(df) %>% 
+  round(digits = 2) %>%
+  abs() # 多重共線性に対応するため
+```
+
+### `corrplot`
+```{r}
+library(corrplot)
+corrplot::corrplot(mcor, 
+                   type = "lower", # 下半分を表示
+                   method = "shade", # 四角いパネルで表示
+                   shade.col = NA, # パネルに政府を示す斜線を加えない
+                   tl.col = "black", # textlabelの色を変える
+                   tl.srt = 45, # 上部テキストラベルの角度を変更
+                   addCoef.col = "black", # 相関係数を黒で表示
+                   cl.pos = "n", # 凡例を表示させない
+                   order = "AOE") # "hclust", "AOE", "FPC"
+```
+
+### `GGpairs`
+
+これは、すごく簡単に使えます。
+```{r}
+library(GGally)
+ggpairs(df)
+```
+ 
+ ### `heatmap`
+ 
+```{r}
+heatmap(mcor, symm = TRUE)
+```
+
+### 最後に、、、
+
+簡単にかけますね。
+
+Ａdios!!
+
+### references
+
+* (http://www.sthda.com/english/wiki/correlation-analyses-in-r)
