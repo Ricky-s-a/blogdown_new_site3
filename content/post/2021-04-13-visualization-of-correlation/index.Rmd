@@ -1,0 +1,35 @@
+---
+title: 相関関係を図示する
+author: Rikiya Honda
+date: '2021-04-13'
+slug: visualization of correlation
+categories: []
+tags: []
+description: ''
+thumbnail: ''
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+Sys.setenv(lang = "en")
+```
+
+相関関係を図示化する必要があったので、メモとして書いておきます。
+
+### 動作環境
+```{r}
+version
+```
+
+### パッケージの準備
+
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse", "corrplot")
+lapply(Packages, library, character.only = TRUE)
+```

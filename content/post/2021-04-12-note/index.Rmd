@@ -1,0 +1,84 @@
+---
+title: メモ
+author: Rikiya Honda
+date: '2021-04-12'
+slug: note
+categories:
+  - blog
+tags: []
+description: ''
+thumbnail: ''
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+Sys.setenv(lang = "en")
+```
+
+先ほど読んでいてなるほどと思った部分を切り取って書いています。
+
+### 動作環境
+```{r}
+version
+```
+
+### パッケージの準備
+
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse", "datasets")
+lapply(Packages, library, character.only = TRUE)
+```
+
+### baseRのデータセットを表示させる
+
+サブタイトルのまま。
+
+```{r}
+library(help = "datasets")
+```
+
+
+### [Journal of Applied Econometrics Data Archive](http://qed.econ.queensu.ca/jae/)
+
+経済学の有力紙である、Journal of Applied Econometricsで扱われているデータでデータ分析の練習ができる。
+
+### データフレームの相関関係を一度にチェック
+
+`cor(df)`で出来ます。
+例えば、
+
+```{r}
+cor(mtcars) 
+```
+
+これを図にしたものは、こちらを参照してください。
+
+
+### 欠損値の有無を調べる
+
+これは`complete.cases`という関数を使います。
+
+例えば、`mtcars`を使うとこうなります。
+
+```{r}
+mtcars[!complete.cases(mtcars),]
+```
+
+baseR付属のデータセットなので、今回は欠損値がありませんでした。
+
+
+### 最後に、、、
+
+最近、Rmarkdownで日本語を使う時の不具合に頭を悩ませているので、あまりタイプできませんでした。
+
+今日は、ここらへんで。
+
+Ａdios!!
+
+### Bibliography
+
+* [Rによる実証分析 回帰分析から因果分析へ](https://shop.ohmsha.co.jp/shopdetail/000000004800/)

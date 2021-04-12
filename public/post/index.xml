@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Rikiya&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sanky Diagram</title>
+      <link>/post/2021-04-05-sanky-diagram/</link>
+      <pubDate>Mon, 05 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-04-05-sanky-diagram/</guid>
+      <description>Sanky Diagramとは？ Sanky Diagramとは、こんなやつです。(相変わらず、、画像のアップロードが分からないww) 川の流れになっている部分が、</description>
+    </item>
+    
     <item>
       <title>ファイル一括読み込み</title>
       <link>/post/file_reading_at_one_go/</link>
