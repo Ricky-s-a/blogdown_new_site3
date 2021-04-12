@@ -79,7 +79,8 @@ heatmap(mcor, symm = TRUE)
 
 簡単にかけますね。
 
-Ａdios!!
+Adios!!
+
 
 ### references
 
