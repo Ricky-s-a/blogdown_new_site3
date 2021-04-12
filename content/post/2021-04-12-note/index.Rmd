@@ -51,6 +51,7 @@ library(help = "datasets")
 `cor(df)`で出来ます。
 例えば、
 
+
 ```{r}
 cor(mtcars) 
 ```

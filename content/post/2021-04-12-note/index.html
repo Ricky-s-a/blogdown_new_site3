@@ -12,4 +12,89 @@ thumbnail: ''
 
 
 
-
+<p>先ほど読んでいてなるほどと思った部分を切り取って書いています。</p>
+<div id="動作環境" class="section level3">
+<h3>動作環境</h3>
+<pre class="r"><code>version</code></pre>
+<pre><code>##                _                           
+## platform       x86_64-w64-mingw32          
+## arch           x86_64                      
+## os             mingw32                     
+## system         x86_64, mingw32             
+## status                                     
+## major          4                           
+## minor          0.3                         
+## year           2020                        
+## month          10                          
+## day            10                          
+## svn rev        79318                       
+## language       R                           
+## version.string R version 4.0.3 (2020-10-10)
+## nickname       Bunny-Wunnies Freak Out</code></pre>
+</div>
+<div id="パッケージの準備" class="section level3">
+<h3>パッケージの準備</h3>
+<pre class="r"><code>Packages &lt;- c(&quot;tidyverse&quot;, &quot;datasets&quot;)
+lapply(Packages, library, character.only = TRUE)</code></pre>
+</div>
+<div id="baserのデータセットを表示させる" class="section level3">
+<h3>baseRのデータセットを表示させる</h3>
+<p>サブタイトルのまま。</p>
+<pre class="r"><code>library(help = &quot;datasets&quot;)</code></pre>
+</div>
+<div id="journal-of-applied-econometrics-data-archive" class="section level3">
+<h3><a href="http://qed.econ.queensu.ca/jae/">Journal of Applied Econometrics Data Archive</a></h3>
+<p>経済学の有力紙である、Journal of Applied Econometricsで扱われているデータでデータ分析の練習ができる。</p>
+</div>
+<div id="データフレームの相関関係を一度にチェック" class="section level3">
+<h3>データフレームの相関関係を一度にチェック</h3>
+<p><code>cor(df)</code>で出来ます。
+例えば、</p>
+<pre class="r"><code>cor(mtcars) </code></pre>
+<pre><code>##             mpg        cyl       disp         hp        drat         wt
+## mpg   1.0000000 -0.8521620 -0.8475514 -0.7761684  0.68117191 -0.8676594
+## cyl  -0.8521620  1.0000000  0.9020329  0.8324475 -0.69993811  0.7824958
+## disp -0.8475514  0.9020329  1.0000000  0.7909486 -0.71021393  0.8879799
+## hp   -0.7761684  0.8324475  0.7909486  1.0000000 -0.44875912  0.6587479
+## drat  0.6811719 -0.6999381 -0.7102139 -0.4487591  1.00000000 -0.7124406
+## wt   -0.8676594  0.7824958  0.8879799  0.6587479 -0.71244065  1.0000000
+## qsec  0.4186840 -0.5912421 -0.4336979 -0.7082234  0.09120476 -0.1747159
+## vs    0.6640389 -0.8108118 -0.7104159 -0.7230967  0.44027846 -0.5549157
+## am    0.5998324 -0.5226070 -0.5912270 -0.2432043  0.71271113 -0.6924953
+## gear  0.4802848 -0.4926866 -0.5555692 -0.1257043  0.69961013 -0.5832870
+## carb -0.5509251  0.5269883  0.3949769  0.7498125 -0.09078980  0.4276059
+##             qsec         vs          am       gear        carb
+## mpg   0.41868403  0.6640389  0.59983243  0.4802848 -0.55092507
+## cyl  -0.59124207 -0.8108118 -0.52260705 -0.4926866  0.52698829
+## disp -0.43369788 -0.7104159 -0.59122704 -0.5555692  0.39497686
+## hp   -0.70822339 -0.7230967 -0.24320426 -0.1257043  0.74981247
+## drat  0.09120476  0.4402785  0.71271113  0.6996101 -0.09078980
+## wt   -0.17471588 -0.5549157 -0.69249526 -0.5832870  0.42760594
+## qsec  1.00000000  0.7445354 -0.22986086 -0.2126822 -0.65624923
+## vs    0.74453544  1.0000000  0.16834512  0.2060233 -0.56960714
+## am   -0.22986086  0.1683451  1.00000000  0.7940588  0.05753435
+## gear -0.21268223  0.2060233  0.79405876  1.0000000  0.27407284
+## carb -0.65624923 -0.5696071  0.05753435  0.2740728  1.00000000</code></pre>
+<p>これを図にしたものは、こちらを参照してください。</p>
+</div>
+<div id="欠損値の有無を調べる" class="section level3">
+<h3>欠損値の有無を調べる</h3>
+<p>これは<code>complete.cases</code>という関数を使います。</p>
+<p>例えば、<code>mtcars</code>を使うとこうなります。</p>
+<pre class="r"><code>mtcars[!complete.cases(mtcars),]</code></pre>
+<pre><code>##  [1] mpg  cyl  disp hp   drat wt   qsec vs   am   gear carb
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>baseR付属のデータセットなので、今回は欠損値がありませんでした。</p>
+</div>
+<div id="最後に" class="section level3">
+<h3>最後に、、、</h3>
+<p>最近、Rmarkdownで日本語を使う時の不具合に頭を悩ませているので、あまりタイプできませんでした。</p>
+<p>今日は、ここらへんで。</p>
+<p>Ａdios!!</p>
+</div>
+<div id="bibliography" class="section level3">
+<h3>Bibliography</h3>
+<ul>
+<li><a href="https://shop.ohmsha.co.jp/shopdetail/000000004800/">Rによる実証分析 回帰分析から因果分析へ</a></li>
+</ul>
+</div>
