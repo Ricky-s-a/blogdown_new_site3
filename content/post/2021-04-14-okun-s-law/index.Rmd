@@ -1,0 +1,34 @@
+---
+title: Okun's Law
+author: Rikiya Honda
+date: '2021-04-14'
+slug: []
+categories:
+  - blog
+tags: []
+description: ''
+thumbnail: ''
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7)
+Sys.setenv(lang = "en")
+```
+
+nest()を使いたかったので、Okun's lawを検証する過程で使ってみようと思います。
+
+### 動作環境
+```{r}
+version
+```
+
+### パッケージの準備
+
+```{r, echo=TRUE, results='hide', message=FALSE}
+Packages <- c("tidyverse")
+lapply(Packages, library, character.only = TRUE)
+```
+
+

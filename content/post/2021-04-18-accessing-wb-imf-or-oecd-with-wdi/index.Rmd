@@ -1,0 +1,89 @@
+---
+title: World Bank, IMF or OECDからデータを取得するWebAPI
+author: Rikiya Honda
+date: '2021-04-18'
+slug: accessing_economic_data
+categories:
+  - note
+tags:
+  - WDI
+description: ''
+thumbnail: ''
+---
+
+今日は、経済データを取得する方法を記載します。
+
+では、見ていきましょう！
+
+## CODE
+
+```{r}
+library(WDI)
+library(tidyverse)
+
+WDI::WDIsearch("gdp")[1:10,]
+
+
+# open vignettes in a tab
+
+browseVignettes("WDI")
+
+# check the version of package"WDI"
+
+packageVersion("WDI")
+
+# URL for the description of "WDI" in cran
+#https://cran.r-project.org/web/packages/WDI/index.html
+
+# extract country info from "WDI"
+country <- WDI::WDI_data$country %>% as_tibble()
+colnames(country)
+
+
+# countrycode -------------------------------------------------------------
+
+
+# what is "iso3c" and "iso3c"?
+# A. it's some kind of abbreviated country code. We can use "countrycode" package to
+# search for iso2c country code from the original country names.
+countrycode::countrycode(sourcevar = "Japan",
+                         origin = "country.name",
+                         destination = "iso2c")
+
+names <- c("Japan", "USA", "China", "South Korea", "India")
+iso3c_names <- countrycode::countrycode(sourcevar = names,
+                         origin = "country.name",
+                         destination = "iso3c")
+iso3c_names
+
+# When you want to convert iso3c to country names, run the following code.
+countrycode::countrycode(iso3c_names,
+                         origin = "iso3c", 
+                         destination = "country.name")
+
+
+
+# WDI ----------------------------------------------------------------
+
+iso2c_names <- countrycode::countrycode(names,
+                                        origin = "country.name",
+                                        destination = "iso2c")
+
+gdp <- WDI::WDI(country = iso2c_names,
+                indicator = "NY.GDP.MKTP.CD", # see the more indicator from "https://data.worldbank.org/indicator"
+                start = 2000,
+                end = 2020) %>% 
+  as_tibble()
+gdp
+
+ggplot(gdp, aes(year, NY.GDP.MKTP.CD, group = country, colour = country)) +
+  geom_line(key_glyph = "timeseries") + 
+  scale_color_discrete(limits = c("United States","China" ,"Japan", "India", "Korea")) 
+  # the other way, but not complete; guides(colour = guide_legend(reverse = TRUE))
+
+# the scatter plot of "gdp"
+ggplot(gdp, aes(year, year, group = country, size = NY.GDP.MKTP.CD)) +
+  geom_point(alpha = 0.1, stroke = 0.1)
+
+```
+
